@@ -1,0 +1,7 @@
+logging:
+  level:
+    nemo: debug
+spring:
+  config:
+    import:
+      - application-secret.yml
