@@ -46,7 +46,7 @@ public class SymbolDetail {
 		AUTHENTIC3("어센틱심볼 : 오디움"),
 		AUTHENTIC4("어센틱심볼 : 도원경"),
 		AUTHENTIC5("어센틱심볼 : 아르테리아"),
-		AUTHENTIC6("어센틱심볼 : 카르시아");
+		AUTHENTIC6("어센틱심볼 : 카르시온");
 
 		private final String symbolName;
 
