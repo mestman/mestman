@@ -33,7 +33,7 @@ public class AuthenticSymbol extends Symbol {
 	public int calculateMinimumDays(int totalGrowthSymbol) {
 		// 필요한 심볼 개수
 		int requiredSymbol = totalGrowthSymbol - calculateCurrentGrowth();
-		log.info("requredSymbol : {}", requiredSymbol);
+		log.debug("requredSymbol : {}", requiredSymbol);
 
 		// 최소주간, 14주
 		int totalWeeklySymbol = getTotalWeeklySymbol();
@@ -44,7 +44,7 @@ public class AuthenticSymbol extends Symbol {
 
 		// 남은 심볼 개수 = 필요한 심볼 개수 - 얻을 수 있는 심볼 개수
 		int remainRequiredSymbolCount = requiredSymbol - totalSymbolCount;
-		log.info("remainRequiredSymbolCount : {}", remainRequiredSymbolCount);
+		log.debug("remainRequiredSymbolCount : {}", remainRequiredSymbolCount);
 
 		int remainDays = (int)Math.ceil((double)remainRequiredSymbolCount / OTHER_DAILY_SYMBOL);
 		if (getSymbolDetail().isCernium()) {
