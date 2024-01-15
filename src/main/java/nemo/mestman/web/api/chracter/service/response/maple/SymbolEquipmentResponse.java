@@ -5,13 +5,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import nemo.mestman.domain.symbol.SymbolDetail;
-import nemo.mestman.web.api.chracter.controller.response.CharacterSymbolMinimumDaysResponse;
-import nemo.mestman.web.api.chracter.controller.response.SymbolMinimumDays;
+import nemo.mestman.web.api.chracter.controller.response.SymbolMinDays;
+import nemo.mestman.web.api.chracter.controller.response.SymbolMinDaysResponse;
 
 @Slf4j
 @ToString
@@ -22,13 +23,20 @@ public class SymbolEquipmentResponse {
 	private String characterClass;
 	private List<SymbolDetail> symbol;
 
-	public CharacterSymbolMinimumDaysResponse createCharacterSymbolMinimumDaysResponse() {
-		return new CharacterSymbolMinimumDaysResponse(
-			toLocalDate(),
-			toSymbolMinimumDays());
+	@Builder
+	public SymbolEquipmentResponse(String date, String characterClass, List<SymbolDetail> symbol) {
+		this.date = date;
+		this.characterClass = characterClass;
+		this.symbol = symbol;
 	}
 
-	private List<SymbolMinimumDays> toSymbolMinimumDays() {
+	public SymbolMinDaysResponse toSymbolMinDaysResponse() {
+		return new SymbolMinDaysResponse(
+			toLocalDate(),
+			toSymbolMinDays());
+	}
+
+	private List<SymbolMinDays> toSymbolMinDays() {
 		LocalDate criteriaDate = LocalDate.parse(this.date, DateTimeFormatter.ISO_DATE_TIME);
 
 		return symbol.stream()

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import nemo.mestman.web.api.chracter.controller.response.SymbolMinimumDays;
+import nemo.mestman.web.api.chracter.controller.response.SymbolMinDays;
 
 class SymbolTest {
 
@@ -51,7 +51,7 @@ class SymbolTest {
 		Symbol symbol = Symbol.acane(symbolDetail);
 
 		// when
-		SymbolMinimumDays actual = symbol.createSymbolMinimumDays(createCriteriaDate());
+		SymbolMinDays actual = symbol.createSymbolMinimumDays(createCriteriaDate());
 
 		// then
 		assertThat(actual)

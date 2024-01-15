@@ -15,14 +15,12 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SymbolDetail {
 	private Name symbolName;
-	private String symbolIcon;
 	private Integer symbolLevel;
 	private Integer symbolGrowthCount;
 
 	@Builder
-	public SymbolDetail(Name symbolName, String symbolIcon, Integer symbolLevel, Integer symbolGrowthCount) {
+	public SymbolDetail(Name symbolName, Integer symbolLevel, Integer symbolGrowthCount) {
 		this.symbolName = symbolName;
-		this.symbolIcon = symbolIcon;
 		this.symbolLevel = symbolLevel;
 		this.symbolGrowthCount = symbolGrowthCount;
 	}
@@ -35,23 +33,61 @@ public class SymbolDetail {
 	}
 
 	public enum Name {
-		ACANE1("아케인심볼 : 소멸의 여로"),
-		ACANE2("아케인심볼 : 츄츄 아일랜드"),
-		ACANE3("아케인심볼 : 레헬른"),
-		ACANE4("아케인심볼 : 아르카나"),
-		ACANE5("아케인심볼 : 모라스"),
-		ACANE6("아케인심볼 : 에스페라"),
-		AUTHENTIC1("어센틱심볼 : 세르니움"),
-		AUTHENTIC2("어센틱심볼 : 아르크스"),
-		AUTHENTIC3("어센틱심볼 : 오디움"),
-		AUTHENTIC4("어센틱심볼 : 도원경"),
-		AUTHENTIC5("어센틱심볼 : 아르테리아"),
-		AUTHENTIC6("어센틱심볼 : 카르시온");
+		ACANE1(
+			"아케인심볼 : 소멸의 여로",
+			"https://open.api.nexon.com/static/maplestory/ItemIcon/KEIDJHOA.png"
+		),
+		ACANE2(
+			"아케인심볼 : 츄츄 아일랜드",
+			"https://open.api.nexon.com/static/maplestory/ItemIcon/KEIDJHOD.png"
+		),
+		ACANE3(
+			"아케인심볼 : 레헬른",
+			"https://open.api.nexon.com/static/maplestory/ItemIcon/KEIDJHOC.png"
+		),
+		ACANE4(
+			"아케인심볼 : 아르카나",
+			"https://open.api.nexon.com/static/maplestory/ItemIcon/KEIDJHOF.png"
+		),
+		ACANE5(
+			"아케인심볼 : 모라스",
+			"https://open.api.nexon.com/static/maplestory/ItemIcon/KEIDJHOH.png"
+		),
+		ACANE6(
+			"아케인심볼 : 에스페라",
+			"https://open.api.nexon.com/static/maplestory/ItemIcon/KEIDJHOE.png"
+		),
+		AUTHENTIC1(
+			"어센틱심볼 : 세르니움",
+			"https://open.api.nexon.com/static/maplestory/ItemIcon/KEIDIHOB.png"
+		),
+		AUTHENTIC2(
+			"어센틱심볼 : 아르크스",
+			"https://open.api.nexon.com/static/maplestory/ItemIcon/KEIDIHOA.png"
+		),
+		AUTHENTIC3("어센틱심볼 : 오디움",
+			"https://open.api.nexon.com/static/maplestory/ItemIcon/KEIDIHOD.png"
+		),
+		AUTHENTIC4(
+			"어센틱심볼 : 도원경",
+			"https://open.api.nexon.com/static/maplestory/ItemIcon/KEIDIHOC.png"
+		),
+		AUTHENTIC5(
+			"어센틱심볼 : 아르테리아",
+			"https://open.api.nexon.com/static/maplestory/ItemIcon/KEIDIHOF.png"
+		),
+		AUTHENTIC6(
+			"어센틱심볼 : 카르시온",
+			"https://open.api.nexon.com/static/maplestory/ItemIcon/KEIDIHOE.png"
+		);
 
 		private final String symbolName;
+		@Getter
+		private final String symbolIcon;
 
-		Name(String symbolName) {
+		Name(String symbolName, String symbolIcon) {
 			this.symbolName = symbolName;
+			this.symbolIcon = symbolIcon;
 		}
 
 		@JsonCreator(mode = JsonCreator.Mode.DELEGATING)

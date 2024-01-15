@@ -8,7 +8,7 @@ import lombok.Getter;
 import nemo.mestman.domain.symbol.calculator.AcaneSymbolCalculator;
 import nemo.mestman.domain.symbol.calculator.AuthenticSymbolCalculator;
 import nemo.mestman.domain.symbol.calculator.SymbolCalculator;
-import nemo.mestman.web.api.chracter.controller.response.SymbolMinimumDays;
+import nemo.mestman.web.api.chracter.controller.response.SymbolMinDays;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,16 +33,16 @@ public abstract class Symbol {
 
 	public abstract int calculateRequiredTotalSymbolCount(int totalGrowthSymbol);
 
-	public SymbolMinimumDays createSymbolMinimumDays(LocalDate criteriaDate) {
+	public SymbolMinDays createSymbolMinimumDays(LocalDate criteriaDate) {
 		SymbolCalculator acaneSymbolCalculator = new AcaneSymbolCalculator();
 		SymbolCalculator authenticSymbolCalculator = new AuthenticSymbolCalculator();
 		if (symbolDetail.isAcane()) {
 			LocalDate minimumDate = acaneSymbolCalculator.calculate(this, criteriaDate);
 			int requiredTotalSymbolCount = acaneSymbolCalculator.calculateRequiredTotalSymbolCount(this);
-			return SymbolMinimumDays.of(symbolDetail, requiredTotalSymbolCount, minimumDate);
+			return SymbolMinDays.of(symbolDetail, requiredTotalSymbolCount, minimumDate);
 		}
 		LocalDate minimumDate = authenticSymbolCalculator.calculate(this, criteriaDate);
 		int requiredTotalSymbolCount = authenticSymbolCalculator.calculateRequiredTotalSymbolCount(this);
-		return SymbolMinimumDays.of(symbolDetail, requiredTotalSymbolCount, minimumDate);
+		return SymbolMinDays.of(symbolDetail, requiredTotalSymbolCount, minimumDate);
 	}
 }
