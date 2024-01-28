@@ -32,7 +32,7 @@ public class SymbolEquipmentResponse {
 
 	public SymbolMinDaysResponse toSymbolMinDaysResponse() {
 		return new SymbolMinDaysResponse(
-			toLocalDate(),
+			LocalDate.parse(date, DateTimeFormatter.ISO_DATE_TIME),
 			toSymbolMinDays());
 	}
 
@@ -43,9 +43,5 @@ public class SymbolEquipmentResponse {
 			.map(SymbolDetail::toSymbol)
 			.map(symbol -> symbol.createSymbolMinimumDays(criteriaDate))
 			.toList();
-	}
-
-	private LocalDate toLocalDate() {
-		return LocalDate.parse(date, DateTimeFormatter.ISO_DATE_TIME);
 	}
 }

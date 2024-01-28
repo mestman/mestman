@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
@@ -14,11 +16,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import io.netty.handler.codec.http.HttpHeaderValues;
@@ -31,9 +36,11 @@ import nemo.mestman.web.api.chracter.service.CharacterService;
 import nemo.mestman.web.api.chracter.service.request.SymbolMinDaysServiceRequest;
 import nemo.mestman.web.api.chracter.service.response.maple.OCIDResponse;
 import nemo.mestman.web.api.chracter.service.response.maple.SymbolEquipmentResponse;
+import nemo.mestman.web.error.maple.MapleErrorDetail;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @Slf4j
 @SpringBootTest
@@ -98,15 +105,17 @@ class CharacterServiceTest {
 	}
 
 	@DisplayName("사용자는 캐릭터의 장착 심볼이 특정 레벨에 해당하는 요구치를 넘어간 상태인 경우에도 최소일수를 계산한다")
-	@Test
-	void calcSymbolMinimumDays_givenOverSymbolGrowthCount_thenOk() {
+	@CsvSource(value = {"8,810,1935,2024-04-20", "9,1909,100,2024-01-19"})
+	@ParameterizedTest
+	void calcSymbolMinimumDays_givenOverSymbolGrowthCount_thenOk(int level, int growthCount,
+		int requiredTotalSymbolCount, String expectedMinDate) {
 		// given
 		SymbolMinDaysServiceRequest request = createSymbolEquipmentServiceRequest();
 
 		enqueue(HttpStatus.OK.value(), createOICDResponse());
 
 		SymbolEquipmentResponse symbolEquipmentResponse = createSymbolEquipmentResponse(LocalDate.of(2024, 1, 14),
-			SymbolDetail.Name.AUTHENTIC1, 8, 810);
+			SymbolDetail.Name.AUTHENTIC1, level, growthCount);
 		enqueue(HttpStatus.OK.value(), symbolEquipmentResponse);
 
 		// when
@@ -117,9 +126,9 @@ class CharacterServiceTest {
 			.date(LocalDate.of(2024, 1, 14))
 			.symbol(List.of(
 					SymbolMinDays.of(
-						createSymbolDetail(SymbolDetail.Name.AUTHENTIC1, 8, 810),
-						1935,
-						LocalDate.of(2024, 4, 19))
+						createSymbolDetail(SymbolDetail.Name.AUTHENTIC1, level, growthCount),
+						requiredTotalSymbolCount,
+						LocalDate.parse(expectedMinDate, DateTimeFormatter.ISO_LOCAL_DATE))
 				)
 			)
 			.build();
@@ -131,12 +140,31 @@ class CharacterServiceTest {
 	void givenNonExistName_whenReadSymbolEquipment_thenNotFoundError() {
 		// given
 		SymbolMinDaysServiceRequest request = createSymbolEquipmentServiceRequestForNonExistName();
-		// when
-		Throwable throwable = catchThrowable(() -> characterService.calcSymbolMinimumDays(request));
-		// then
-		assertThat(throwable)
-			.isInstanceOf(IllegalArgumentException.class)
-			.hasMessage("존재하지 않는 이름입니다. characterName=무");
+
+		Map<String, Object> errorMap = new HashMap<>();
+		errorMap.put("error", new MapleErrorDetail("OPENAPI00004", "Please input valid parameter"));
+		enqueue(HttpStatus.BAD_REQUEST.value(), errorMap);
+
+		// when & then
+		StepVerifier.create(characterService.calcSymbolMinimumDays(request))
+			.expectError(HttpServerErrorException.class)
+			.verify();
+	}
+
+	@DisplayName("사용자는 서버 에러가 발생하여 장착 심볼의 최소 일수를 계산할 수 없다")
+	@Test
+	void calcSymbolMinimumDays_whenServerError_thenResponseError() {
+		// given
+		SymbolMinDaysServiceRequest request = createSymbolEquipmentServiceRequestForNonExistName();
+
+		Map<String, Object> errorMap = new HashMap<>();
+		errorMap.put("error", new MapleErrorDetail("OPENAPI00004", "Please input valid parameter"));
+		enqueue(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorMap);
+
+		// when & then
+		StepVerifier.create(characterService.calcSymbolMinimumDays(request))
+			.expectError(HttpServerErrorException.class)
+			.verify();
 	}
 
 	private SymbolEquipmentResponse createSymbolEquipmentResponse(LocalDate localDate, SymbolDetail.Name name,
@@ -165,8 +193,8 @@ class CharacterServiceTest {
 
 	private void enqueue(int statusCode, Object data) {
 		mockWebServer.enqueue(new MockResponse().setResponseCode(statusCode)
-			.setBody(ObjectMapperUtil.serialize(data))
-			.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
+			.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+			.setBody(ObjectMapperUtil.serialize(data)));
 	}
 
 	private SymbolMinDaysServiceRequest createSymbolEquipmentServiceRequest() {

@@ -15,6 +15,8 @@ public class CharacterSymbolEquipmentRequest {
 	private String characterName;
 
 	public SymbolMinDaysServiceRequest toServiceRequest() {
-		return new SymbolMinDaysServiceRequest(characterName);
+		return SymbolMinDaysServiceRequest.builder()
+			.characterName(characterName)
+			.build();
 	}
 }

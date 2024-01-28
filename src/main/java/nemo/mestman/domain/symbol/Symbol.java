@@ -34,6 +34,7 @@ public abstract class Symbol {
 	public abstract int calculateRequiredTotalSymbolCount(int totalGrowthSymbol);
 
 	public SymbolMinDays createSymbolMinimumDays(LocalDate criteriaDate) {
+		// TODO: 아케인 계산과 어센틱 계산을 별도의 계산으로 분리하여 합치는 방향으로 구현
 		SymbolCalculator acaneSymbolCalculator = new AcaneSymbolCalculator();
 		SymbolCalculator authenticSymbolCalculator = new AuthenticSymbolCalculator();
 		if (symbolDetail.isAcane()) {

@@ -14,6 +14,7 @@ import nemo.mestman.web.api.chracter.controller.response.SymbolMinDaysResponse;
 import nemo.mestman.web.api.chracter.service.request.SymbolMinDaysServiceRequest;
 import nemo.mestman.web.api.chracter.service.response.maple.OCIDResponse;
 import nemo.mestman.web.api.chracter.service.response.maple.SymbolEquipmentResponse;
+import nemo.mestman.web.error.maple.MapleError;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -35,7 +36,7 @@ public class CharacterService {
 		return fetchOCID(request.getCharacterName())
 			.map(OCIDResponse::getOcid)
 			.flatMap(this::fetchSymbolEquipment)
-			.map(SymbolEquipmentResponse::toSymbolMinDaysResponse);
+			.map(response -> response.toSymbolMinDaysResponse());
 	}
 
 	private Mono<OCIDResponse> fetchOCID(String characterName) {
@@ -45,15 +46,18 @@ public class CharacterService {
 				.queryParam("character_name", characterName)
 				.build())
 			.retrieve()
-			.onStatus(HttpStatusCode::isError, handleErrorResponse(characterName))
+			.onStatus(HttpStatusCode::isError, handleError(characterName))
 			.bodyToMono(OCIDResponse.class)
 			.timeout(TIMEOUT);
 	}
 
-	private Function<ClientResponse, Mono<? extends Throwable>> handleErrorResponse(String input) {
+	private Function<ClientResponse, Mono<? extends Throwable>> handleError(String input) {
 		return response -> {
 			logTraceResponse(response);
-			return Mono.error(new IllegalArgumentException(String.format("존재하지 않는 이름입니다. characterName=%s", input)));
+			return response.bodyToMono(MapleError.class)
+				.timeout(TIMEOUT)
+				.switchIfEmpty(Mono.defer(() -> Mono.just(MapleError.internalServerError())))
+				.flatMap(mapleError -> Mono.error(mapleError.createException(input)));
 		};
 	}
 
@@ -66,7 +70,7 @@ public class CharacterService {
 				.queryParam("date", date)
 				.build())
 			.retrieve()
-			.onStatus(HttpStatusCode::isError, handleErrorResponse(ocid))
+			.onStatus(HttpStatusCode::isError, handleError(ocid))
 			.bodyToMono(SymbolEquipmentResponse.class)
 			.timeout(TIMEOUT);
 	}
