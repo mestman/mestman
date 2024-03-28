@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 
 import lombok.Getter;
 import lombok.ToString;
+import nemo.mestman.web.success.SuccessCode;
 
 @ToString
 @Getter
@@ -27,5 +28,13 @@ public class ApiResponse<T> {
 
 	public static <T> ApiResponse<T> badRequest(String message, T data) {
 		return new ApiResponse<>(HttpStatus.BAD_REQUEST, message, data);
+	}
+	
+	public static <T> ApiResponse<T> success(SuccessCode code) {
+		return new ApiResponse<>(code.getHttpStatus(), code.getMessage(), null);
+	}
+
+	public static <T> ApiResponse<T> success(SuccessCode code, T data) {
+		return new ApiResponse<>(code.getHttpStatus(), code.getMessage(), data);
 	}
 }
