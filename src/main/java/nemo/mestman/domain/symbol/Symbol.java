@@ -5,10 +5,10 @@ import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import nemo.mestman.domain.chracter.controller.response.SymbolMinDays;
 import nemo.mestman.domain.symbol.calculator.AcaneSymbolCalculator;
 import nemo.mestman.domain.symbol.calculator.AuthenticSymbolCalculator;
 import nemo.mestman.domain.symbol.calculator.SymbolCalculator;
-import nemo.mestman.web.api.chracter.controller.response.SymbolMinDays;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)

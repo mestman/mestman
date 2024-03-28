@@ -7,7 +7,7 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
-import nemo.mestman.web.api.chracter.service.response.maple.SymbolEquipmentResponse;
+import nemo.mestman.domain.chracter.service.response.maple.SymbolEquipmentResponse;
 
 @ToString
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

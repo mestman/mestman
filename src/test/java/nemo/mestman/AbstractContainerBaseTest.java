@@ -12,10 +12,10 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import lombok.extern.slf4j.Slf4j;
-import nemo.mestman.domain.member.Member;
-import nemo.mestman.domain.member.MemberRepository;
-import nemo.mestman.domain.roadmap.RoadMap;
-import nemo.mestman.domain.roadmap.RoadMapRepository;
+import nemo.mestman.domain.member.entity.Member;
+import nemo.mestman.domain.member.repository.MemberRepository;
+import nemo.mestman.domain.roadmap.entity.RoadMap;
+import nemo.mestman.domain.roadmap.repository.RoadMapRepository;
 
 @Slf4j
 @ActiveProfiles("test")

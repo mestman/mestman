@@ -8,7 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import nemo.mestman.web.api.chracter.controller.response.SymbolMinDays;
+import nemo.mestman.domain.chracter.controller.response.SymbolMinDays;
 
 class SymbolTest {
 
