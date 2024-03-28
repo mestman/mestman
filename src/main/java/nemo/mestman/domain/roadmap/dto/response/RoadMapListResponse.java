@@ -1,4 +1,4 @@
-package nemo.mestman.domain.roadmap.response;
+package nemo.mestman.domain.roadmap.dto.response;
 
 import java.util.List;
 

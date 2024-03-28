@@ -12,6 +12,8 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import lombok.extern.slf4j.Slf4j;
+import nemo.mestman.domain.card.entity.Card;
+import nemo.mestman.domain.card.repository.CardRepository;
 import nemo.mestman.domain.member.entity.Member;
 import nemo.mestman.domain.member.repository.MemberRepository;
 import nemo.mestman.domain.roadmap.entity.RoadMap;
@@ -47,8 +49,12 @@ public class AbstractContainerBaseTest {
 	@Autowired
 	protected RoadMapRepository roadMapRepository;
 
+	@Autowired
+	protected CardRepository cardRepository;
+
 	@AfterEach
 	void tearDown() {
+		cardRepository.deleteAllInBatch();
 		roadMapRepository.deleteAllInBatch();
 		memberRepository.deleteAllInBatch();
 	}
@@ -59,5 +65,9 @@ public class AbstractContainerBaseTest {
 
 	protected RoadMap createRoadMap(Member member) {
 		return RoadMap.create("로드맵1", "히어로", member);
+	}
+
+	protected Card createCard(RoadMap roadMap) {
+		return Card.create("초보자용", roadMap);
 	}
 }

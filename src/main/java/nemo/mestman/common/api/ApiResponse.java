@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import lombok.Getter;
 import lombok.ToString;
 import nemo.mestman.common.error.code.ErrorCode;
-import nemo.mestman.common.success.SuccessCode;
+import nemo.mestman.common.successcode.SuccessCode;
 
 @ToString
 @Getter
@@ -31,11 +31,11 @@ public class ApiResponse<T> {
 		return new ApiResponse<>(HttpStatus.BAD_REQUEST, message, data);
 	}
 
-	public static <T> ApiResponse<T> success(SuccessCode code) {
+	public static <T> ApiResponse<T> from(SuccessCode code) {
 		return new ApiResponse<>(code.getHttpStatus(), code.getMessage(), null);
 	}
 
-	public static <T> ApiResponse<T> success(SuccessCode code, T data) {
+	public static <T> ApiResponse<T> from(SuccessCode code, T data) {
 		return new ApiResponse<>(code.getHttpStatus(), code.getMessage(), data);
 	}
 

@@ -1,4 +1,4 @@
-package nemo.mestman.domain.roadmap.response;
+package nemo.mestman.domain.roadmap.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -11,13 +11,13 @@ import nemo.mestman.domain.roadmap.entity.RoadMap;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-public class RoadMapUpdateResponse {
+public class RoadMapRegisterResponse {
 	private Long id;
 	private String name;
 	private String characterClass;
 
-	public static RoadMapUpdateResponse from(RoadMap roadMap) {
-		return RoadMapUpdateResponse.builder()
+	public static RoadMapRegisterResponse from(RoadMap roadMap) {
+		return RoadMapRegisterResponse.builder()
 			.id(roadMap.getId())
 			.name(roadMap.getName())
 			.characterClass(roadMap.getCharacterClass())

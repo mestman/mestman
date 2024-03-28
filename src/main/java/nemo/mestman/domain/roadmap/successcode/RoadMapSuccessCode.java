@@ -1,9 +1,10 @@
-package nemo.mestman.common.success;
+package nemo.mestman.domain.roadmap.successcode;
 
 import org.springframework.http.HttpStatus;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import nemo.mestman.common.successcode.SuccessCode;
 
 @Getter
 @RequiredArgsConstructor

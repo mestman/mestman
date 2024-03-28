@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nemo.mestman.common.api.ApiResponse;
-import nemo.mestman.domain.roadmap.request.RoadMapUpdateRequest;
-import nemo.mestman.domain.roadmap.response.RoadMapDeleteResponse;
-import nemo.mestman.domain.roadmap.response.RoadMapListResponse;
-import nemo.mestman.domain.roadmap.response.RoadMapUpdateResponse;
-import nemo.mestman.common.success.RoadMapSuccessCode;
-import nemo.mestman.domain.roadmap.request.RoadMapRegisterRequest;
-import nemo.mestman.domain.roadmap.response.RoadMapRegisterResponse;
+import nemo.mestman.domain.roadmap.dto.request.RoadMapRegisterRequest;
+import nemo.mestman.domain.roadmap.dto.request.RoadMapUpdateRequest;
+import nemo.mestman.domain.roadmap.dto.response.RoadMapDeleteResponse;
+import nemo.mestman.domain.roadmap.dto.response.RoadMapListResponse;
+import nemo.mestman.domain.roadmap.dto.response.RoadMapRegisterResponse;
+import nemo.mestman.domain.roadmap.dto.response.RoadMapUpdateResponse;
 import nemo.mestman.domain.roadmap.service.RoadMapService;
+import nemo.mestman.domain.roadmap.successcode.RoadMapSuccessCode;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +33,7 @@ public class RoadMapRestController {
 	public ResponseEntity<ApiResponse<RoadMapRegisterResponse>> registerRoadMap(
 		@Valid @RequestBody RoadMapRegisterRequest request) {
 		return ResponseEntity.ok(
-			ApiResponse.success(
+			ApiResponse.from(
 				RoadMapSuccessCode.OK_REGISTER_ROADMAP,
 				service.registerRoadMap(request)
 			)
@@ -43,7 +43,7 @@ public class RoadMapRestController {
 	@GetMapping
 	public ResponseEntity<ApiResponse<RoadMapListResponse>> readAllRoadMap(Long memberId) {
 		return ResponseEntity.ok(
-			ApiResponse.success(
+			ApiResponse.from(
 				RoadMapSuccessCode.OK_READ_ROADMAPS,
 				service.readAllRoadMap(memberId)
 			)
@@ -55,7 +55,7 @@ public class RoadMapRestController {
 		@PathVariable Long roadmapId,
 		@Valid @RequestBody RoadMapUpdateRequest request) {
 		return ResponseEntity.ok(
-			ApiResponse.success(
+			ApiResponse.from(
 				RoadMapSuccessCode.OK_UPDATE_ROADMAP,
 				service.updateRoadMap(roadmapId, request)
 			)
@@ -66,7 +66,7 @@ public class RoadMapRestController {
 	public ResponseEntity<ApiResponse<RoadMapDeleteResponse>> deleteRoadMap(
 		@PathVariable Long roadmapId) {
 		return ResponseEntity.ok(
-			ApiResponse.success(
+			ApiResponse.from(
 				RoadMapSuccessCode.OK_DELETE_ROADMAP,
 				service.deleteRoadMap(roadmapId)
 			)

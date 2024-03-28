@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nemo.mestman.common.api.ApiResponse;
-import nemo.mestman.common.success.MemberSuccessCode;
 import nemo.mestman.domain.member.dto.request.MemberRegisterRequest;
 import nemo.mestman.domain.member.dto.response.MemberRegisterResponse;
 import nemo.mestman.domain.member.service.MemberService;
+import nemo.mestman.domain.member.successcode.MemberSuccessCode;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,7 +26,7 @@ public class MemberRestController {
 		@Valid @RequestBody MemberRegisterRequest request) {
 		MemberRegisterResponse response = service.registerMember(request);
 		return ResponseEntity.ok(
-			ApiResponse.success(
+			ApiResponse.from(
 				MemberSuccessCode.OK_REGISTER_MEMBER,
 				response
 			)

@@ -1,4 +1,4 @@
-package nemo.mestman.common.success;
+package nemo.mestman.common.successcode;
 
 import org.springframework.http.HttpStatus;
 

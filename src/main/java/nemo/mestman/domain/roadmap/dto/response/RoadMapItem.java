@@ -1,4 +1,4 @@
-package nemo.mestman.domain.roadmap.response;
+package nemo.mestman.domain.roadmap.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

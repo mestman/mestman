@@ -7,15 +7,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import nemo.mestman.common.error.exception.MestmanException;
+import nemo.mestman.domain.roadmap.dto.request.RoadMapRegisterRequest;
+import nemo.mestman.domain.roadmap.dto.request.RoadMapUpdateRequest;
+import nemo.mestman.domain.roadmap.dto.response.RoadMapDeleteResponse;
+import nemo.mestman.domain.roadmap.dto.response.RoadMapItem;
+import nemo.mestman.domain.roadmap.dto.response.RoadMapListResponse;
+import nemo.mestman.domain.roadmap.dto.response.RoadMapRegisterResponse;
+import nemo.mestman.domain.roadmap.dto.response.RoadMapUpdateResponse;
 import nemo.mestman.domain.roadmap.entity.RoadMap;
+import nemo.mestman.domain.roadmap.errorcode.RoadMapErrorCode;
 import nemo.mestman.domain.roadmap.repository.RoadMapRepository;
-import nemo.mestman.domain.roadmap.request.RoadMapRegisterRequest;
-import nemo.mestman.domain.roadmap.request.RoadMapUpdateRequest;
-import nemo.mestman.domain.roadmap.response.RoadMapDeleteResponse;
-import nemo.mestman.domain.roadmap.response.RoadMapItem;
-import nemo.mestman.domain.roadmap.response.RoadMapListResponse;
-import nemo.mestman.domain.roadmap.response.RoadMapRegisterResponse;
-import nemo.mestman.domain.roadmap.response.RoadMapUpdateResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +39,12 @@ public class RoadMapService {
 				.map(RoadMapItem::from)
 				.collect(Collectors.toList())
 		);
+	}
+
+	@Transactional(readOnly = true)
+	public RoadMap readOneRoadMap(Long roadMapId) {
+		return roadMapRepository.findByRoadMapId(roadMapId)
+			.orElseThrow(() -> new MestmanException(RoadMapErrorCode.NOT_FOUND));
 	}
 
 	@Transactional
