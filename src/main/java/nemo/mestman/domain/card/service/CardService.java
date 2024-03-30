@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import nemo.mestman.common.error.exception.MestmanException;
 import nemo.mestman.domain.card.dto.request.CardRegisterRequest;
 import nemo.mestman.domain.card.dto.request.CardUpdateRequest;
 import nemo.mestman.domain.card.dto.response.CardDeleteResponse;
@@ -15,6 +16,7 @@ import nemo.mestman.domain.card.dto.response.CardListResponse;
 import nemo.mestman.domain.card.dto.response.CardRegisterResponse;
 import nemo.mestman.domain.card.dto.response.CardUpdateResponse;
 import nemo.mestman.domain.card.entity.Card;
+import nemo.mestman.domain.card.errorcode.CardErrorCode;
 import nemo.mestman.domain.card.repository.CardRepository;
 import nemo.mestman.domain.roadmap.entity.RoadMap;
 import nemo.mestman.domain.roadmap.service.RoadMapService;
@@ -42,14 +44,24 @@ public class CardService {
 		return CardListResponse.create(cards);
 	}
 
+	@Transactional(readOnly = true)
+	public Card readOneCard(Long cardId) {
+		return repository.findById(cardId)
+			.orElseThrow(() -> new MestmanException(CardErrorCode.NOT_FOUND));
+	}
+
 	@Transactional
 	public CardUpdateResponse updateCard(Long cardId, CardUpdateRequest request) {
-		return null;
+		Card card = readOneCard(cardId);
+		RoadMap roadMap = roadMapService.readOneRoadMap(request.getRoadMapId());
+		card.change(request.toEntity(roadMap));
+		return CardUpdateResponse.from(card);
 	}
 
 	@Transactional
 	public CardDeleteResponse deleteCard(Long cardId) {
-		return null;
+		repository.deleteById(cardId);
+		return CardDeleteResponse.from(cardId);
 	}
 
 	@Transactional

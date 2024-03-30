@@ -14,6 +14,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import lombok.extern.slf4j.Slf4j;
 import nemo.mestman.domain.card.entity.Card;
 import nemo.mestman.domain.card.repository.CardRepository;
+import nemo.mestman.domain.item.repository.MapleItemRepository;
 import nemo.mestman.domain.member.entity.Member;
 import nemo.mestman.domain.member.repository.MemberRepository;
 import nemo.mestman.domain.roadmap.entity.RoadMap;
@@ -52,8 +53,12 @@ public class AbstractContainerBaseTest {
 	@Autowired
 	protected CardRepository cardRepository;
 
+	@Autowired
+	protected MapleItemRepository itemRepository;
+
 	@AfterEach
 	void tearDown() {
+		itemRepository.deleteAllInBatch();
 		cardRepository.deleteAllInBatch();
 		roadMapRepository.deleteAllInBatch();
 		memberRepository.deleteAllInBatch();
