@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import nemo.mestman.domain.card.entity.Card;
 import nemo.mestman.domain.item.entity.MapleItem;
-import nemo.mestman.domain.item.entity.StarForce;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -19,19 +18,20 @@ import nemo.mestman.domain.item.entity.StarForce;
 public class MapleItemRegisterRequest {
 	@NotBlank
 	private String name;
+	private Integer level;
 	@PositiveOrZero
 	private Integer starForce;
 	@NotNull
 	private Long cardId;
 
-	public static MapleItemRegisterRequest create(String name, Integer starForce, Long cardId) {
-		return new MapleItemRegisterRequest(name, starForce, cardId);
+	public static MapleItemRegisterRequest create(String name, Integer level, Integer starForce, Long cardId) {
+		return new MapleItemRegisterRequest(name, level, starForce, cardId);
 	}
 
 	public MapleItem toEntity(Card card) {
-		return MapleItem.create(
+		return MapleItem.card(
 			name,
-			StarForce.create(starForce),
+			level,
 			card
 		);
 	}

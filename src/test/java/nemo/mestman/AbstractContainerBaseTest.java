@@ -14,6 +14,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import lombok.extern.slf4j.Slf4j;
 import nemo.mestman.domain.card.entity.Card;
 import nemo.mestman.domain.card.repository.CardRepository;
+import nemo.mestman.domain.item.entity.MapleItem;
 import nemo.mestman.domain.item.repository.MapleItemRepository;
 import nemo.mestman.domain.member.entity.Member;
 import nemo.mestman.domain.member.repository.MemberRepository;
@@ -74,5 +75,15 @@ public class AbstractContainerBaseTest {
 
 	protected Card createCard(RoadMap roadMap) {
 		return Card.create("초보자용", roadMap);
+	}
+
+	protected MapleItem createMapleItem(Card card) {
+		String name = "하이네스 워리어헬름";
+		int level = 150;
+		return MapleItem.card(name, level, card);
+	}
+
+	protected MapleItem createMapleItem(String name, int level) {
+		return MapleItem.noCard(name, level);
 	}
 }

@@ -28,9 +28,10 @@ class MapleItemServiceTest extends AbstractContainerBaseTest {
 		Card card = cardRepository.save(createCard(roadMap));
 
 		String name = "하이네스 워리어헬름";
+		int level = 150;
 		int startForce = 18;
 		Long cardId = card.getId();
-		MapleItemRegisterRequest request = MapleItemRegisterRequest.create(name, startForce, cardId);
+		MapleItemRegisterRequest request = MapleItemRegisterRequest.create(name, level, startForce, cardId);
 
 		// when
 		MapleItemRegisterResponse response = service.registerItem(request);
