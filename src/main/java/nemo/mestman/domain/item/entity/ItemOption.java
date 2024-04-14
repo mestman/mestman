@@ -14,12 +14,16 @@ public class ItemOption {
 	private OptionType name;
 	private int value;
 
-	public static ItemOption create(OptionType name, int value) {
+	public static ItemOption byType(OptionType name, int value) {
 		return new ItemOption(name, value);
 	}
 
 	public static ItemOption str(int value) {
 		return new ItemOption(OptionType.STR, value);
+	}
+
+	public static ItemOption dex(int value) {
+		return new ItemOption(OptionType.DEX, value);
 	}
 
 	/**

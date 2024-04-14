@@ -1,11 +1,15 @@
 package nemo.mestman.domain.item.entity;
 
+import static nemo.mestman.domain.item.entity.ItemOption.OptionType.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Transient;
 import lombok.Getter;
+import nemo.mestman.domain.item.entity.ItemOption.OptionType;
 
 @Getter
 @Embeddable
@@ -18,7 +22,9 @@ public class StarForce {
 
 	@Transient
 	private final List<StarForceCalculator> calculators = List.of(
-		new StarForceSTRCalculator()
+		new StarForceStatCalculator(),
+		new StarForceHpCalculator(),
+		new StarForceATTCalculator()
 	);
 
 	private StarForce(int value, int maxStars) {
@@ -66,9 +72,21 @@ public class StarForce {
 	 * @return 아이템 수치 옵션
 	 */
 	public List<ItemOption> calOptions(int level) {
-		int str = calculators.get(0).calculate(value, level);
-		ItemOption strOption = ItemOption.str(str);
-		return List.of(strOption);
+		List<OptionType> types = List.of(STR, DEX, HP, ATT);
+
+		List<ItemOption> result = new ArrayList<>();
+		for (OptionType type : types) {
+			int stat = 0;
+			if (type.equals(STR) || type.equals(DEX)) {
+				stat = calculators.get(0).calculate(value, level);
+			} else if (type.equals(HP)) {
+				stat = calculators.get(1).calculate(value, level);
+			} else if (type.equals(ATT)) {
+				stat = calculators.get(2).calculate(value, level);
+			}
+			result.add(ItemOption.byType(type, stat));
+		}
+		return result;
 	}
 
 	public void increase(int value) {

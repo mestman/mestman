@@ -2,7 +2,7 @@ package nemo.mestman.domain.item.entity;
 
 import java.util.stream.IntStream;
 
-public class StarForceSTRCalculator implements StarForceCalculator {
+public class StarForceStatCalculator implements StarForceCalculator {
 
 	private final int[] level94 = {2, 2, 2, 2, 2};
 	private final int[] level107 = {2, 2, 2, 2, 2, 3, 3, 3};

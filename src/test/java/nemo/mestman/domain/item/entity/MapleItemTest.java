@@ -27,7 +27,7 @@ class MapleItemTest extends AbstractContainerBaseTest {
 		Card card = createCard(roadMap);
 		MapleItem mapleItem = createMapleItem(card);
 
-		mapleItem.addOption(ItemOption.create(STR, 10));
+		mapleItem.addOption(ItemOption.byType(STR, 10));
 
 		// when
 		String result = mapleItem.parseItemOptions();
@@ -39,7 +39,7 @@ class MapleItemTest extends AbstractContainerBaseTest {
 	@DisplayName("아이템의 스타포스 옵션을 계산한다")
 	@MethodSource(value = "levelAndStarForce")
 	@ParameterizedTest
-	void calStartForce(int level, int starForce, String expected) {
+	void calStartForce(int level, int starForce, List<String> expects) {
 		// given
 		String name = "하이네스 워리어헬름";
 		MapleItem item = createMapleItem(name, level);
@@ -48,16 +48,16 @@ class MapleItemTest extends AbstractContainerBaseTest {
 		List<ItemOption> options = item.calStartForce();
 		// then
 		Assertions.assertThat(options)
-			.hasSize(1)
+			.hasSize(4)
 			.map(ItemOption::parse)
-			.containsExactlyInAnyOrder(expected);
+			.containsExactlyInAnyOrderElementsOf(expects);
 	}
 
 	private static Stream<Arguments> levelAndStarForce() {
 		return Stream.of(
-			Arguments.arguments(130, 18, "STR=61"),
-			Arguments.arguments(140, 18, "STR=67"),
-			Arguments.arguments(150, 18, "STR=73")
+			Arguments.arguments(130, 18, List.of("STR=61", "DEX=61", "HP=255", "ATT=24")),
+			Arguments.arguments(140, 18, List.of("STR=67", "DEX=67", "HP=255", "ATT=27")),
+			Arguments.arguments(150, 18, List.of("STR=73", "DEX=73", "HP=255", "ATT=30"))
 		);
 	}
 
