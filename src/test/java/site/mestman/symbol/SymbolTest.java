@@ -30,6 +30,7 @@ class SymbolTest {
 		LocalDate today = LocalDate.now();
 		return Stream.of(
 			Arguments.of(1, 0, today.plusDays(134)),
+			Arguments.of(2, 8, today.plusDays(133)),
 			Arguments.of(10, 0, today.plusDays(115))
 		);
 	}
