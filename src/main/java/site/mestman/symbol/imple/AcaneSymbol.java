@@ -14,8 +14,10 @@ public class AcaneSymbol extends Symbol {
 		300, 335, 372, 0
 	};
 
+	private static final int DAILY_SYMBOLS = 20;
+
 	public AcaneSymbol(int level, int growthForCurrentLevel) {
-		super(level, growthForCurrentLevel, REQUIRED_MAX_LEVEL_GROWTH);
+		super(level, growthForCurrentLevel, REQUIRED_MAX_LEVEL_GROWTH, DAILY_SYMBOLS);
 	}
 
 	@Override

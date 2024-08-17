@@ -112,20 +112,16 @@ class SymbolTest {
 	}
 
 	@DisplayName("어센틱 세르니움 심볼이 주어지고 해당 심볼이 만렙을 달성하기 위한 필요일자를 계산한다")
-	@MethodSource(value = {"authenticSymbolSource"})
+	@MethodSource(value = {"cerniumAuthenticSymbolSource"})
 	@ParameterizedTest
 	void testCalculateDateForMaxLevelWithAuthentic(int level, int growthForCurrentLevel, int numberOfSymbolPerDay,
 		LocalDate expected) {
 		// given
-		Symbol pathOfVanishing = Symbol.authentic(level, growthForCurrentLevel);
+		Symbol pathOfVanishing = Symbol.cernium(level, growthForCurrentLevel);
 		// when
 		LocalDate completionDate = pathOfVanishing.calculateCompletionDateForMaxLevel(numberOfSymbolPerDay);
 		// then
 		assertThat(completionDate).isEqualTo(expected);
-	}
-
-	public static Stream<Arguments> authenticSymbolSource() {
-		return Stream.concat(cerniumAuthenticSymbolSource(), otherAuthenticSymbolSource());
 	}
 
 	public static Stream<Arguments> cerniumAuthenticSymbolSource() {
@@ -139,6 +135,19 @@ class SymbolTest {
 			Arguments.of(10, 1100, numberOfSymbolPerDay, today.plusDays(0)),
 			Arguments.of(11, 0, numberOfSymbolPerDay, today.plusDays(0))
 		);
+	}
+
+	@DisplayName("어센틱 세르니움 심볼이 아닌 다른 어센틱 심볼이 주어지고 해당 심볼이 만렙을 달성하기 위한 필요일자를 계산한다")
+	@MethodSource(value = {"otherAuthenticSymbolSource"})
+	@ParameterizedTest
+	void testCalculateDateForMaxLevelWithOtherAuthentic(int level, int growthForCurrentLevel, int numberOfSymbolPerDay,
+		LocalDate expected) {
+		// given
+		Symbol pathOfVanishing = Symbol.basic(level, growthForCurrentLevel);
+		// when
+		LocalDate completionDate = pathOfVanishing.calculateCompletionDateForMaxLevel(numberOfSymbolPerDay);
+		// then
+		assertThat(completionDate).isEqualTo(expected);
 	}
 
 	private static Stream<Arguments> otherAuthenticSymbolSource() {
@@ -161,7 +170,7 @@ class SymbolTest {
 		// given
 		int growthForCurrentLevel = 0;
 		// when
-		Throwable throwable = catchThrowable(() -> Symbol.authentic(level, growthForCurrentLevel));
+		Throwable throwable = catchThrowable(() -> Symbol.cernium(level, growthForCurrentLevel));
 		// then
 		assertThat(throwable)
 			.isInstanceOf(IllegalArgumentException.class)
@@ -175,7 +184,7 @@ class SymbolTest {
 		// given
 		int level = 1;
 		// when
-		Throwable throwable = catchThrowable(() -> Symbol.authentic(level, growthForCurrentLevel));
+		Throwable throwable = catchThrowable(() -> Symbol.cernium(level, growthForCurrentLevel));
 		// then
 		Assertions.assertThat(throwable)
 			.isInstanceOf(IllegalArgumentException.class)
@@ -189,7 +198,7 @@ class SymbolTest {
 		int level = 11;
 		int growthForCurrentLevel = 0;
 		// when
-		Symbol authentic = Symbol.authentic(level, growthForCurrentLevel);
+		Symbol authentic = Symbol.cernium(level, growthForCurrentLevel);
 		// then
 		int expected = 0;
 		Assertions.assertThat(authentic)
@@ -204,7 +213,7 @@ class SymbolTest {
 		// given
 		int level = 11;
 		// when
-		Throwable throwable = catchThrowable(() -> Symbol.authentic(level, growthForCurrentLevel));
+		Throwable throwable = catchThrowable(() -> Symbol.cernium(level, growthForCurrentLevel));
 		// then
 		Assertions.assertThat(throwable)
 			.isInstanceOf(IllegalArgumentException.class)
@@ -218,7 +227,7 @@ class SymbolTest {
 		int level = 1;
 		int growthForCurrentLevel = 1;
 		// when
-		Symbol symbol = Symbol.authentic(level, growthForCurrentLevel);
+		Symbol symbol = Symbol.cernium(level, growthForCurrentLevel);
 		// then
 		int expected = 4565;
 		assertThat(symbol)
