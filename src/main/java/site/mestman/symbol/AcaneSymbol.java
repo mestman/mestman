@@ -3,6 +3,9 @@ package site.mestman.symbol;
 import java.util.stream.IntStream;
 
 public class AcaneSymbol extends Symbol {
+	private static final int MAX_LEVEL = 20;
+	private static final int REQUIRED_MAX_LEVEL_GROWTH = 2679;
+
 	public AcaneSymbol(int level, int growthForCurrentLevel, int requiredMaxLevelGrowth) {
 		super(level, growthForCurrentLevel, requiredMaxLevelGrowth);
 	}
@@ -10,15 +13,17 @@ public class AcaneSymbol extends Symbol {
 	@Override
 	public void validateFor(int level, int growthForCurrentLevel) {
 		if (isLevelOutOfRange(level)) {
-			throw new IllegalArgumentException("The level of the Arkane symbol must be between 1 and 20 levels.");
+			throw new IllegalArgumentException(
+				"The level of the Acane symbol must be between 1 and " + MAX_LEVEL + " levels.");
 		}
 		if (isGrowthOutOfRange(level, growthForCurrentLevel)) {
 			throw new IllegalArgumentException(
-				"The growth for the current level of the Arkane symbol must be between 1 and 2679.");
+				"The growth for the current level of the Acane symbol must be between 1 and "
+					+ REQUIRED_MAX_LEVEL_GROWTH + ".");
 		}
 		if (isGrowthNonZeroAtMaxLevelFor(level, growthForCurrentLevel)) {
 			throw new IllegalArgumentException(
-				"when the Arcane Symbol's max level is 20, growthForCurrentLevel must be 0.");
+				"when the Arcane Symbol's max level is " + MAX_LEVEL + ", growthForCurrentLevel must be 0.");
 		}
 	}
 

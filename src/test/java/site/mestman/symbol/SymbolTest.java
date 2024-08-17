@@ -52,7 +52,7 @@ class SymbolTest {
 		// then
 		assertThat(throwable)
 			.isInstanceOf(IllegalArgumentException.class)
-			.hasMessage("The level of the Arkane symbol must be between 1 and 20 levels.");
+			.hasMessage("The level of the Acane symbol must be between 1 and 20 levels.");
 	}
 
 	@DisplayName("현재 레벨 성장치는 0보다 작거나 아케인 심볼의 최대 누적 성장치보다 크면 예외가 발생한다")
@@ -66,7 +66,7 @@ class SymbolTest {
 		// then
 		Assertions.assertThat(throwable)
 			.isInstanceOf(IllegalArgumentException.class)
-			.hasMessage("The growth for the current level of the Arkane symbol must be between 1 and 2679.");
+			.hasMessage("The growth for the current level of the Acane symbol must be between 1 and 2679.");
 	}
 
 	@DisplayName("아케인 심볼이 최대 레벨(20)일때 현재 성장치는 0이어야 한다")
