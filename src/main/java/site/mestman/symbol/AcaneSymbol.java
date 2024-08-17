@@ -12,7 +12,7 @@ public class AcaneSymbol extends Symbol {
 
 	@Override
 	public void validateFor(int level, int growthForCurrentLevel) {
-		if (isLevelOutOfRange(level)) {
+		if (!isLevelOfRange(level)) {
 			throw new IllegalArgumentException(
 				"The level of the Acane symbol must be between 1 and " + MAX_LEVEL + " levels.");
 		}
@@ -28,8 +28,8 @@ public class AcaneSymbol extends Symbol {
 	}
 
 	@Override
-	public boolean isLevelOutOfRange(int level) {
-		return level < 1 || level > MAX_LEVEL;
+	public boolean isLevelOfRange(int level) {
+		return level >= 1 && level <= MAX_LEVEL;
 	}
 
 	@Override

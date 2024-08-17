@@ -27,7 +27,7 @@ public abstract class Symbol {
 
 	public abstract void validateFor(int level, int growthForCurrentLevel);
 
-	public abstract boolean isLevelOutOfRange(int level);
+	public abstract boolean isLevelOfRange(int level);
 
 	public abstract boolean isGrowthOutOfRange(int level, int growthForCurrentLevel);
 
