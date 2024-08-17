@@ -11,7 +11,7 @@ public class Symbol {
 	private final int growthForCurrentLevel; // 현재 성장치
 	private final int requiredMaxLevelGrowth; // 최대 레벨 누적 성장치
 
-	public Symbol(int level, int growthForCurrentLevel, int requiredMaxLevelGrowth) {
+	private Symbol(int level, int growthForCurrentLevel, int requiredMaxLevelGrowth) {
 		this.level = level;
 		this.growthForCurrentLevel = growthForCurrentLevel;
 		this.requiredMaxLevelGrowth = requiredMaxLevelGrowth;
@@ -22,6 +22,10 @@ public class Symbol {
 			throw new IllegalArgumentException(
 				"The growth for the current level of the Arkane symbol must be between 1 and 2679.");
 		}
+	}
+
+	public static Symbol arcane(int level, int growthForCurrentLevel) {
+		return new Symbol(level, growthForCurrentLevel, 2679);
 	}
 
 	public static Symbol authentic(int level, int growthForCurrentLevel) {

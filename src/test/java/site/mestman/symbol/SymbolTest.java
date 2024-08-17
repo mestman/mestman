@@ -20,8 +20,7 @@ class SymbolTest {
 	@ParameterizedTest
 	void testCalculateDateForMaxLevel(int level, int growthForCurrentLevel, LocalDate expected) {
 		// given
-		int requiredMaxLevelGrowth = 2679;
-		Symbol pathOfVanishing = new Symbol(level, growthForCurrentLevel, requiredMaxLevelGrowth);
+		Symbol pathOfVanishing = Symbol.arcane(level, growthForCurrentLevel);
 		int numberOfSymbolPerDay = 20;
 		// when
 		LocalDate completionDate = pathOfVanishing.calculateCompletionDateForMaxLevel(numberOfSymbolPerDay);
@@ -44,9 +43,8 @@ class SymbolTest {
 	void testCreateSymbolInstanceForLevel(int level) {
 		// given
 		int growthForCurrentLevel = 0;
-		int requiredMaxLevelGrowth = 2679;
 		// when
-		Throwable throwable = catchThrowable(() -> new Symbol(level, growthForCurrentLevel, requiredMaxLevelGrowth));
+		Throwable throwable = catchThrowable(() -> Symbol.arcane(level, growthForCurrentLevel));
 		// then
 		assertThat(throwable)
 			.isInstanceOf(IllegalArgumentException.class)
@@ -59,9 +57,8 @@ class SymbolTest {
 	void testCreateSymbolInstanceForGrowthForCurrentLevel(int growthForCurrentLevel) {
 		// given
 		int level = 1;
-		int requiredMaxLevelGrowth = 2679;
 		// when
-		Throwable throwable = catchThrowable(() -> new Symbol(level, growthForCurrentLevel, requiredMaxLevelGrowth));
+		Throwable throwable = catchThrowable(() -> Symbol.arcane(level, growthForCurrentLevel));
 		// then
 		Assertions.assertThat(throwable)
 			.isInstanceOf(IllegalArgumentException.class)
@@ -74,9 +71,8 @@ class SymbolTest {
 		// given
 		int level = 1;
 		int growthForCurrentLevel = 1;
-		int requiredMaxLevelGrowth = 2679;
 		// when
-		Symbol symbol = new Symbol(level, growthForCurrentLevel, requiredMaxLevelGrowth);
+		Symbol symbol = Symbol.arcane(level, growthForCurrentLevel);
 		// then
 		int expected = 2679;
 		assertThat(symbol)
