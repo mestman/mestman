@@ -3,6 +3,8 @@ package site.mestman.symbol;
 import java.time.LocalDate;
 
 import lombok.extern.slf4j.Slf4j;
+import site.mestman.symbol.imple.AcaneSymbol;
+import site.mestman.symbol.imple.AuthenticSymbol;
 
 @Slf4j
 public abstract class Symbol {
@@ -10,7 +12,7 @@ public abstract class Symbol {
 	private final int growthForCurrentLevel; // 현재 성장치
 	private final int requiredMaxLevelGrowth; // 최대 레벨 누적 성장치
 
-	Symbol(int level, int growthForCurrentLevel, int requiredMaxLevelGrowth) {
+	protected Symbol(int level, int growthForCurrentLevel, int requiredMaxLevelGrowth) {
 		this.level = level;
 		this.growthForCurrentLevel = growthForCurrentLevel;
 		this.requiredMaxLevelGrowth = requiredMaxLevelGrowth;
@@ -20,7 +22,7 @@ public abstract class Symbol {
 	public static Symbol arcane(int level) {
 		return new AcaneSymbol(level, 1);
 	}
-	
+
 	public static Symbol arcane(int level, int growthForCurrentLevel) {
 		return new AcaneSymbol(level, growthForCurrentLevel);
 	}

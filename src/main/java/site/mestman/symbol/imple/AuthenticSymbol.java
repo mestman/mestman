@@ -1,18 +1,16 @@
-package site.mestman.symbol;
+package site.mestman.symbol.imple;
 
 import java.util.stream.IntStream;
 
-public class AcaneSymbol extends Symbol {
-	private static final int MAX_LEVEL = 20;
-	private static final int REQUIRED_MAX_LEVEL_GROWTH = 2679;
-	private static final int[] REQUIRED_GROWTH_BY_LEVEL = {
-		0, 12, 15, 20, 27, 36,
-		47, 60, 75, 92, 111, 132,
-		155, 180, 207, 236, 267,
-		300, 335, 372, 0
-	};
+import site.mestman.symbol.Symbol;
 
-	public AcaneSymbol(int level, int growthForCurrentLevel) {
+public class AuthenticSymbol extends Symbol {
+
+	private static final int MAX_LEVEL = 11;
+	private static final int REQUIRED_MAX_LEVEL_GROWTH = 4565;
+	private static final int[] REQUIRED_GROWTH_BY_LEVEL = {0, 29, 76, 141, 224, 325, 444, 581, 736, 909, 1100, 0};
+
+	public AuthenticSymbol(int level, int growthForCurrentLevel) {
 		super(level, growthForCurrentLevel, REQUIRED_MAX_LEVEL_GROWTH);
 	}
 
@@ -20,16 +18,16 @@ public class AcaneSymbol extends Symbol {
 	public void validateFor(int level, int growthForCurrentLevel) {
 		if (!isLevelOfRange(level)) {
 			throw new IllegalArgumentException(
-				"The level of the Acane symbol must be between 1 and " + MAX_LEVEL + " levels.");
+				"The level of the Authentic symbol must be between 1 and " + MAX_LEVEL + " levels.");
 		}
 		if (!isGrowthOfRange(level, growthForCurrentLevel)) {
 			throw new IllegalArgumentException(
-				"The growth for the current level of the Acane symbol must be between 1 and "
+				"The growth for the current level of the Authentic symbol must be between 1 and "
 					+ REQUIRED_MAX_LEVEL_GROWTH + ".");
 		}
 		if (isGrowthNonZeroAtMaxLevelFor(level, growthForCurrentLevel)) {
 			throw new IllegalArgumentException(
-				"when the Arcane Symbol's max level is " + MAX_LEVEL + ", growthForCurrentLevel must be 0.");
+				"when the Authentic Symbol's max level is " + MAX_LEVEL + ", growthForCurrentLevel must be 0.");
 		}
 	}
 
@@ -51,6 +49,7 @@ public class AcaneSymbol extends Symbol {
 		return level == MAX_LEVEL && growthForCurrentLevel != 0;
 	}
 
+	@Override
 	public int reduceGrowthBy(int level) {
 		return IntStream.rangeClosed(1, level - 1)
 			.map(i -> REQUIRED_GROWTH_BY_LEVEL[i])
