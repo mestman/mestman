@@ -17,6 +17,10 @@ public abstract class Symbol {
 		validateFor(level, growthForCurrentLevel);
 	}
 
+	public static Symbol arcane(int level) {
+		return new AcaneSymbol(level, 1);
+	}
+	
 	public static Symbol arcane(int level, int growthForCurrentLevel) {
 		return new AcaneSymbol(level, growthForCurrentLevel);
 	}

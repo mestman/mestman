@@ -46,9 +46,9 @@ class SymbolTest {
 	@ParameterizedTest
 	void testCreateSymbolInstanceForLevel(int level) {
 		// given
-		int growthForCurrentLevel = 0;
+
 		// when
-		Throwable throwable = catchThrowable(() -> Symbol.arcane(level, growthForCurrentLevel));
+		Throwable throwable = catchThrowable(() -> Symbol.arcane(level));
 		// then
 		assertThat(throwable)
 			.isInstanceOf(IllegalArgumentException.class)
@@ -74,9 +74,8 @@ class SymbolTest {
 	void testArcaneSymbolGrowthAtMaxLevel() {
 		// given
 		int level = 20;
-		int growthForCurrentLevel = 0;
 		// when
-		Symbol arcane = Symbol.arcane(level, growthForCurrentLevel);
+		Symbol arcane = Symbol.arcane(level, 0);
 		// then
 		int expected = 0;
 		Assertions.assertThat(arcane)
@@ -103,9 +102,8 @@ class SymbolTest {
 	void testMaxGrowthForCurrentLevel() {
 		// given
 		int level = 1;
-		int growthForCurrentLevel = 1;
 		// when
-		Symbol symbol = Symbol.arcane(level, growthForCurrentLevel);
+		Symbol symbol = Symbol.arcane(level);
 		// then
 		int expected = 2679;
 		assertThat(symbol)
