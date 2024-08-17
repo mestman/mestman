@@ -38,14 +38,11 @@ public abstract class Symbol {
 		// 누적 성장치 = 현재 레벨 누적 성장치 + 현재 레벨 성장치
 		// 만렙 달성 필요 일자 = (만렙 필요 성장치 - 누적 성장치) / 하루에 얻을 수 있는 심볼 개수
 		int reduceGrowth = reduceGrowthBy(level) + growthForCurrentLevel;
-		log.info("reduceGrowth is {} by level", reduceGrowth);
 		int requiredGrowth = requiredMaxLevelGrowth - reduceGrowth;
 		int days = requiredGrowth / numberOfSymbolPerDay;
-		log.info("days is {}", days);
 		if (requiredGrowth % numberOfSymbolPerDay != 0) {
 			days++;
 		}
-		log.info("days is {}", days);
 		return LocalDate.now().plusDays(days);
 	}
 

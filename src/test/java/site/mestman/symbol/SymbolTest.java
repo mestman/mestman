@@ -116,10 +116,10 @@ class SymbolTest {
 	@DisplayName("어센틱 세르니움 심볼이 주어지고 해당 심볼이 만렙을 달성하기 위한 필요일자를 계산한다")
 	@MethodSource(value = {"authenticSymbolSource"})
 	@ParameterizedTest
-	void testCalculateDateForMaxLevelWithAuthentic(int level, int growthForCurrentLevel, LocalDate expected) {
+	void testCalculateDateForMaxLevelWithAuthentic(int level, int growthForCurrentLevel, int numberOfSymbolPerDay,
+		LocalDate expected) {
 		// given
 		Symbol pathOfVanishing = Symbol.authentic(level, growthForCurrentLevel);
-		int numberOfSymbolPerDay = 20;
 		// when
 		LocalDate completionDate = pathOfVanishing.calculateCompletionDateForMaxLevel(numberOfSymbolPerDay);
 		// then
@@ -127,14 +127,32 @@ class SymbolTest {
 	}
 
 	public static Stream<Arguments> authenticSymbolSource() {
+		return Stream.concat(cerniumAuthenticSymbolSource(), otherAuthenticSymbolSource());
+	}
+
+	public static Stream<Arguments> cerniumAuthenticSymbolSource() {
 		LocalDate today = LocalDate.now();
+		int numberOfSymbolPerDay = 20;
 		return Stream.of(
-			Arguments.of(1, 1, today.plusDays(229)),
-			Arguments.of(2, 12, today.plusDays(227)),
-			Arguments.of(10, 1, today.plusDays(55)),
-			Arguments.of(10, 1109, today.plusDays(1)),
-			Arguments.of(10, 1100, today.plusDays(0)),
-			Arguments.of(11, 0, today.plusDays(0))
+			Arguments.of(1, 1, numberOfSymbolPerDay, today.plusDays(229)),
+			Arguments.of(2, 12, numberOfSymbolPerDay, today.plusDays(227)),
+			Arguments.of(10, 1, numberOfSymbolPerDay, today.plusDays(55)),
+			Arguments.of(10, 1109, numberOfSymbolPerDay, today.plusDays(1)),
+			Arguments.of(10, 1100, numberOfSymbolPerDay, today.plusDays(0)),
+			Arguments.of(11, 0, numberOfSymbolPerDay, today.plusDays(0))
+		);
+	}
+
+	private static Stream<Arguments> otherAuthenticSymbolSource() {
+		LocalDate today = LocalDate.now();
+		int numberOfSymbolPerDay = 10;
+		return Stream.of(
+			Arguments.of(1, 1, numberOfSymbolPerDay, today.plusDays(457)),
+			Arguments.of(2, 12, numberOfSymbolPerDay, today.plusDays(453)),
+			Arguments.of(10, 1, numberOfSymbolPerDay, today.plusDays(110)),
+			Arguments.of(10, 1109, numberOfSymbolPerDay, today.plusDays(1)),
+			Arguments.of(10, 1100, numberOfSymbolPerDay, today.plusDays(0)),
+			Arguments.of(11, 0, numberOfSymbolPerDay, today.plusDays(0))
 		);
 	}
 
