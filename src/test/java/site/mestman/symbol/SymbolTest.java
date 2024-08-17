@@ -85,7 +85,7 @@ class SymbolTest {
 	}
 
 	@DisplayName("아케인 심볼이 최대 레벨(20)일때 현재 성장치는 0이 아닌 경우 예외가 발생한다")
-	@CsvSource(value = {"2679", "1"})
+	@CsvSource(value = {"1", "2679"})
 	@ParameterizedTest
 	void testArcaneSymbolThrowsExceptionWhenGrowthNotEqualsMaxLevel(int growthForCurrentLevel) {
 		// given
@@ -165,5 +165,48 @@ class SymbolTest {
 		assertThat(throwable)
 			.isInstanceOf(IllegalArgumentException.class)
 			.hasMessage("The level of the Authentic symbol must be between 1 and 11 levels.");
+	}
+
+	@DisplayName("어센틱 심볼의 현재 레벨 성장치는 0보다 작거나 어센틱 심볼의 최대 누적 성장치보다 크면 예외가 발생한다")
+	@CsvSource(value = {"-1", "0", "4566"})
+	@ParameterizedTest
+	void testCreateSymbolInstanceForGrowthForCurrentLevelWithAuthentic(int growthForCurrentLevel) {
+		// given
+		int level = 1;
+		// when
+		Throwable throwable = catchThrowable(() -> Symbol.authentic(level, growthForCurrentLevel));
+		// then
+		Assertions.assertThat(throwable)
+			.isInstanceOf(IllegalArgumentException.class)
+			.hasMessage("The growth for the current level of the Authentic symbol must be between 1 and 4565.");
+	}
+
+	@DisplayName("어센틱 심볼이 최대 레벨(11)일때 현재 성장치는 0이어야 한다")
+	@Test
+	void testAuthenticSymbolGrowthAtMaxLevel() {
+		// given
+		int level = 11;
+		int growthForCurrentLevel = 0;
+		// when
+		Symbol authentic = Symbol.authentic(level, growthForCurrentLevel);
+		// then
+		int expected = 0;
+		Assertions.assertThat(authentic)
+			.extracting("growthForCurrentLevel")
+			.isEqualTo(expected);
+	}
+
+	@DisplayName("어센틱 심볼이 최대 레벨(11)일때 현재 성장치는 0이 아닌 경우 예외가 발생한다")
+	@CsvSource(value = {"1", "4565"})
+	@ParameterizedTest
+	void testAuthenticSymbolThrowsExceptionWhenGrowthNotEqualsMaxLevel(int growthForCurrentLevel) {
+		// given
+		int level = 11;
+		// when
+		Throwable throwable = catchThrowable(() -> Symbol.authentic(level, growthForCurrentLevel));
+		// then
+		Assertions.assertThat(throwable)
+			.isInstanceOf(IllegalArgumentException.class)
+			.hasMessage("when the Authentic Symbol's max level is 11, growthForCurrentLevel must be 0.");
 	}
 }

@@ -19,7 +19,7 @@ public class AuthenticSymbol extends Symbol {
 		}
 		if (isGrowthNonZeroAtMaxLevelFor(level, growthForCurrentLevel)) {
 			throw new IllegalArgumentException(
-				"when the Arcane Symbol's max level is 11, growthForCurrentLevel must be 0.");
+				"when the Authentic Symbol's max level is 11, growthForCurrentLevel must be 0.");
 		}
 	}
 
