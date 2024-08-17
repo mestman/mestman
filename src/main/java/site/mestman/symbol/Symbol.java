@@ -35,13 +35,23 @@ public abstract class Symbol {
 
 	// 현재 심볼이 최대 레벨을 달성하기 위해서 필요한 일자를 계산
 	public LocalDate calculateCompletionDateForMaxLevel(int numberOfSymbolPerDay) {
-		// 누적 성장치 = 현재 레벨 누적 성장치 + 현재 레벨 성장치
-		// 만렙 달성 필요 일자 = (만렙 필요 성장치 - 누적 성장치) / 하루에 얻을 수 있는 심볼 개수
-		int reduceGrowth = reduceGrowthBy(level) + growthForCurrentLevel;
-		int requiredGrowth = requiredMaxLevelGrowth - reduceGrowth;
-		return LocalDate.now().plusDays(days(numberOfSymbolPerDay, requiredGrowth));
+		return LocalDate.now().plusDays(days(numberOfSymbolPerDay, requiredGrowth(reduceGrowth())));
 	}
 
+	// 누적 성장치 = 현재 레벨 누적 성장치 + 현재 레벨 성장치
+	private int reduceGrowth() {
+		return reduceGrowthBy(level) + growthForCurrentLevel;
+	}
+
+	// 현재 레벨에 따른 누적 성장치 계산
+	public abstract int reduceGrowthBy(int level);
+
+	// 필요한 성장치 = 요구되는 최대 성장치 - 누적 성장치
+	private int requiredGrowth(int reduceGrowth) {
+		return requiredMaxLevelGrowth - reduceGrowth;
+	}
+
+	// 만렙 달성 필요 일자 = (만렙 필요 성장치 - 누적 성장치) / 하루에 얻을 수 있는 심볼 개수
 	private int days(int numberOfSymbolPerDay, int requiredGrowth) {
 		int days = requiredGrowth / numberOfSymbolPerDay;
 		if (requiredGrowth % numberOfSymbolPerDay != 0) {
@@ -49,7 +59,4 @@ public abstract class Symbol {
 		}
 		return days;
 	}
-
-	// 현재 레벨에 따른 누적 성장치 계산
-	public abstract int reduceGrowthBy(int level);
 }
