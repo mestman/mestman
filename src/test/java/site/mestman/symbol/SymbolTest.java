@@ -127,4 +127,29 @@ class SymbolTest {
 			.extracting("requiredMaxLevelGrowth")
 			.isEqualTo(expected);
 	}
+
+	@DisplayName("어센틱 세르니움 심볼이 주어지고 해당 심볼이 만렙을 달성하기 위한 필요일자를 계산한다")
+	@MethodSource(value = {"authenticSymbolSource"})
+	@ParameterizedTest
+	void testCalculateDateForMaxLevelWithAuthentic(int level, int growthForCurrentLevel, LocalDate expected) {
+		// given
+		Symbol pathOfVanishing = Symbol.arcane(level, growthForCurrentLevel);
+		int numberOfSymbolPerDay = 20;
+		// when
+		LocalDate completionDate = pathOfVanishing.calculateCompletionDateForMaxLevel(numberOfSymbolPerDay);
+		// then
+		assertThat(completionDate).isEqualTo(expected);
+	}
+
+	public static Stream<Arguments> authenticSymbolSource() {
+		LocalDate today = LocalDate.now();
+		return Stream.of(
+			Arguments.of(1, 1, today.plusDays(229)),
+			Arguments.of(2, 12, today.plusDays(227)),
+			Arguments.of(10, 1, today.plusDays(55)),
+			Arguments.of(10, 1109, today.plusDays(1)),
+			Arguments.of(10, 1100, today.plusDays(0)),
+			Arguments.of(11, 0, today.plusDays(0))
+		);
+	}
 }

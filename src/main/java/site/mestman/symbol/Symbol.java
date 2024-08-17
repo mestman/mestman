@@ -6,12 +6,12 @@ import java.util.stream.IntStream;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class Symbol {
+public abstract class Symbol {
 	private final int level; // 레벨
 	private final int growthForCurrentLevel; // 현재 성장치
 	private final int requiredMaxLevelGrowth; // 최대 레벨 누적 성장치
 
-	private Symbol(int level, int growthForCurrentLevel, int requiredMaxLevelGrowth) {
+	Symbol(int level, int growthForCurrentLevel, int requiredMaxLevelGrowth) {
 		this.level = level;
 		this.growthForCurrentLevel = growthForCurrentLevel;
 		this.requiredMaxLevelGrowth = requiredMaxLevelGrowth;
@@ -22,18 +22,18 @@ public class Symbol {
 			throw new IllegalArgumentException(
 				"The growth for the current level of the Arkane symbol must be between 1 and 2679.");
 		}
-		if (level == 20 && growthForCurrentLevel != 0) {
+		if (isGrowthNonZeroAtMaxLevelFor(level, growthForCurrentLevel)) {
 			throw new IllegalArgumentException(
 				"when the Arcane Symbol's max level is 20, growthForCurrentLevel must be 0.");
 		}
 	}
 
 	public static Symbol arcane(int level, int growthForCurrentLevel) {
-		return new Symbol(level, growthForCurrentLevel, 2679);
+		return new AcaneSymbol(level, growthForCurrentLevel, 2679);
 	}
 
 	public static Symbol authentic(int level, int growthForCurrentLevel) {
-		return new Symbol(level, growthForCurrentLevel, 4565);
+		return new AuthenticSymbol(level, growthForCurrentLevel, 4565);
 	}
 
 	private boolean isLevelOutOfRange(int level) {
@@ -45,6 +45,10 @@ public class Symbol {
 			return false;
 		}
 		return growthForCurrentLevel < 1 || growthForCurrentLevel > 2679;
+	}
+
+	private boolean isGrowthNonZeroAtMaxLevelFor(int level, int growthForCurrentLevel) {
+		return level == 20 && growthForCurrentLevel != 0;
 	}
 
 	// 현재 심볼이 최대 레벨을 달성하기 위해서 필요한 일자를 계산
