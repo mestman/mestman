@@ -29,20 +29,20 @@ public class AcaneSymbol extends Symbol {
 
 	@Override
 	public boolean isLevelOutOfRange(int level) {
-		return level < 1 || level > 20;
+		return level < 1 || level > MAX_LEVEL;
 	}
 
 	@Override
 	public boolean isGrowthOutOfRange(int level, int growthForCurrentLevel) {
-		if (level == 20 && growthForCurrentLevel == 0) {
+		if (level == MAX_LEVEL && growthForCurrentLevel == 0) {
 			return false;
 		}
-		return growthForCurrentLevel < 1 || growthForCurrentLevel > 2679;
+		return growthForCurrentLevel < 1 || growthForCurrentLevel > REQUIRED_MAX_LEVEL_GROWTH;
 	}
 
 	@Override
 	public boolean isGrowthNonZeroAtMaxLevelFor(int level, int growthForCurrentLevel) {
-		return level == 20 && growthForCurrentLevel != 0;
+		return level == MAX_LEVEL && growthForCurrentLevel != 0;
 	}
 
 	public int reduceGrowthBy(int level) {
