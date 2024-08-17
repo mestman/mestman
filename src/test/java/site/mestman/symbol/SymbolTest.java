@@ -113,21 +113,6 @@ class SymbolTest {
 			.isEqualTo(expected);
 	}
 
-	@DisplayName("어센틱 심볼의 최대 레벨 누적 성장치는 4,565이여야 한다")
-	@Test
-	void testMaxGrowthForCurrentLevelWithAuthentic() {
-		// given
-		int level = 1;
-		int growthForCurrentLevel = 1;
-		// when
-		Symbol symbol = Symbol.authentic(level, growthForCurrentLevel);
-		// then
-		int expected = 4565;
-		assertThat(symbol)
-			.extracting("requiredMaxLevelGrowth")
-			.isEqualTo(expected);
-	}
-
 	@DisplayName("어센틱 세르니움 심볼이 주어지고 해당 심볼이 만렙을 달성하기 위한 필요일자를 계산한다")
 	@MethodSource(value = {"authenticSymbolSource"})
 	@ParameterizedTest
@@ -208,5 +193,20 @@ class SymbolTest {
 		Assertions.assertThat(throwable)
 			.isInstanceOf(IllegalArgumentException.class)
 			.hasMessage("when the Authentic Symbol's max level is 11, growthForCurrentLevel must be 0.");
+	}
+
+	@DisplayName("어센틱 심볼의 최대 레벨 누적 성장치는 4,565이여야 한다")
+	@Test
+	void testMaxGrowthForCurrentLevelWithAuthentic() {
+		// given
+		int level = 1;
+		int growthForCurrentLevel = 1;
+		// when
+		Symbol symbol = Symbol.authentic(level, growthForCurrentLevel);
+		// then
+		int expected = 4565;
+		assertThat(symbol)
+			.extracting("requiredMaxLevelGrowth")
+			.isEqualTo(expected);
 	}
 }
