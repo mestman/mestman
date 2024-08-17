@@ -9,11 +9,12 @@ import lombok.extern.slf4j.Slf4j;
 public class Symbol {
 	private final int level; // 레벨
 	private final int growthForCurrentLevel; // 현재 성장치
-	private final int requiredMaxLevelGrowth = 2679; // 최대 레벨 누적 성장치
+	private final int requiredMaxLevelGrowth; // 최대 레벨 누적 성장치
 
-	public Symbol(int level, int growthForCurrentLevel) {
+	public Symbol(int level, int growthForCurrentLevel, int requiredMaxLevelGrowth) {
 		this.level = level;
 		this.growthForCurrentLevel = growthForCurrentLevel;
+		this.requiredMaxLevelGrowth = requiredMaxLevelGrowth;
 		if (isLevelOutOfRange(level)) {
 			throw new IllegalArgumentException("The level of the Arkane symbol must be between 1 and 20 levels.");
 		}
@@ -21,6 +22,10 @@ public class Symbol {
 			throw new IllegalArgumentException(
 				"The growth for the current level of the Arkane symbol must be between 1 and 2679.");
 		}
+	}
+
+	public static Symbol authentic(int level, int growthForCurrentLevel) {
+		return new Symbol(level, growthForCurrentLevel, 4565);
 	}
 
 	private boolean isLevelOutOfRange(int level) {
@@ -35,7 +40,6 @@ public class Symbol {
 	public LocalDate calculateCompletionDateForMaxLevel(int numberOfSymbolPerDay) {
 		// 만렙 달성 필요 일자 = (만렙 필요 성장치 - 누적 성장치) / 하루에 얻을 수 있는 심볼 개수
 		// 누적 성장치 = 현재 레벨 누적 성장치 + 현재 레벨 성장치
-		int requiredMaxLevelGrowth = 2679;
 		int reduceGrowth = reduceGrowthBy(level) + growthForCurrentLevel;
 		log.info("reduceGrowth is {} by level", reduceGrowth);
 		int days = (requiredMaxLevelGrowth - reduceGrowth) / numberOfSymbolPerDay;

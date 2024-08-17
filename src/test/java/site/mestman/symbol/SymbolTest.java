@@ -20,7 +20,8 @@ class SymbolTest {
 	@ParameterizedTest
 	void testCalculateDateForMaxLevel(int level, int growthForCurrentLevel, LocalDate expected) {
 		// given
-		Symbol pathOfVanishing = new Symbol(level, growthForCurrentLevel);
+		int requiredMaxLevelGrowth = 2679;
+		Symbol pathOfVanishing = new Symbol(level, growthForCurrentLevel, requiredMaxLevelGrowth);
 		int numberOfSymbolPerDay = 20;
 		// when
 		LocalDate completionDate = pathOfVanishing.calculateCompletionDateForMaxLevel(numberOfSymbolPerDay);
@@ -43,8 +44,9 @@ class SymbolTest {
 	void testCreateSymbolInstanceForLevel(int level) {
 		// given
 		int growthForCurrentLevel = 0;
+		int requiredMaxLevelGrowth = 2679;
 		// when
-		Throwable throwable = catchThrowable(() -> new Symbol(level, growthForCurrentLevel));
+		Throwable throwable = catchThrowable(() -> new Symbol(level, growthForCurrentLevel, requiredMaxLevelGrowth));
 		// then
 		assertThat(throwable)
 			.isInstanceOf(IllegalArgumentException.class)
@@ -57,24 +59,41 @@ class SymbolTest {
 	void testCreateSymbolInstanceForGrowthForCurrentLevel(int growthForCurrentLevel) {
 		// given
 		int level = 1;
+		int requiredMaxLevelGrowth = 2679;
 		// when
-		Throwable throwable = catchThrowable(() -> new Symbol(level, growthForCurrentLevel));
+		Throwable throwable = catchThrowable(() -> new Symbol(level, growthForCurrentLevel, requiredMaxLevelGrowth));
 		// then
 		Assertions.assertThat(throwable)
 			.isInstanceOf(IllegalArgumentException.class)
 			.hasMessage("The growth for the current level of the Arkane symbol must be between 1 and 2679.");
 	}
 
-	@DisplayName("아케인 심볼의 요구되는 최대 레벨 누적 성장치는 2679여야 한다")
+	@DisplayName("아케인 심볼의 요구되는 최대 레벨 누적 성장치는 2,679이여야 한다")
 	@Test
 	void testMaxGrowthForCurrentLevel() {
 		// given
 		int level = 1;
 		int growthForCurrentLevel = 1;
+		int requiredMaxLevelGrowth = 2679;
 		// when
-		Symbol symbol = new Symbol(level, growthForCurrentLevel);
+		Symbol symbol = new Symbol(level, growthForCurrentLevel, requiredMaxLevelGrowth);
 		// then
 		int expected = 2679;
+		assertThat(symbol)
+			.extracting("requiredMaxLevelGrowth")
+			.isEqualTo(expected);
+	}
+
+	@DisplayName("어센틱 심볼의 최대 레벨 누적 성장치는 4,565이여야 한다")
+	@Test
+	void testMaxGrowthForCurrentLevelWithAuthentic() {
+		// given
+		int level = 1;
+		int growthForCurrentLevel = 1;
+		// when
+		Symbol symbol = Symbol.authentic(level, growthForCurrentLevel);
+		// then
+		int expected = 4565;
 		assertThat(symbol)
 			.extracting("requiredMaxLevelGrowth")
 			.isEqualTo(expected);
