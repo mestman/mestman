@@ -5,6 +5,12 @@ import java.util.stream.IntStream;
 public class AcaneSymbol extends Symbol {
 	private static final int MAX_LEVEL = 20;
 	private static final int REQUIRED_MAX_LEVEL_GROWTH = 2679;
+	private static final int[] REQUIRED_GROWTH_BY_LEVEL = {
+		0, 12, 15, 20, 27, 36,
+		47, 60, 75, 92, 111, 132,
+		155, 180, 207, 236, 267,
+		300, 335, 372, 0
+	};
 
 	public AcaneSymbol(int level, int growthForCurrentLevel, int requiredMaxLevelGrowth) {
 		super(level, growthForCurrentLevel, requiredMaxLevelGrowth);
@@ -46,13 +52,8 @@ public class AcaneSymbol extends Symbol {
 	}
 
 	public int reduceGrowthBy(int level) {
-		int[] requiredGrowthByLevel = {0, 12, 15, 20, 27, 36,
-			47, 60, 75, 92, 111, 132,
-			155, 180, 207, 236, 267,
-			300, 335, 372, 0};
-
 		return IntStream.rangeClosed(1, level - 1)
-			.map(i -> requiredGrowthByLevel[i])
+			.map(i -> REQUIRED_GROWTH_BY_LEVEL[i])
 			.sum();
 	}
 }
