@@ -18,11 +18,11 @@ public abstract class Symbol {
 	}
 
 	public static Symbol arcane(int level, int growthForCurrentLevel) {
-		return new AcaneSymbol(level, growthForCurrentLevel, 2679);
+		return new AcaneSymbol(level, growthForCurrentLevel);
 	}
 
 	public static Symbol authentic(int level, int growthForCurrentLevel) {
-		return new AuthenticSymbol(level, growthForCurrentLevel, 4565);
+		return new AuthenticSymbol(level, growthForCurrentLevel);
 	}
 
 	public abstract void validateFor(int level, int growthForCurrentLevel);

@@ -12,8 +12,8 @@ public class AcaneSymbol extends Symbol {
 		300, 335, 372, 0
 	};
 
-	public AcaneSymbol(int level, int growthForCurrentLevel, int requiredMaxLevelGrowth) {
-		super(level, growthForCurrentLevel, requiredMaxLevelGrowth);
+	public AcaneSymbol(int level, int growthForCurrentLevel) {
+		super(level, growthForCurrentLevel, REQUIRED_MAX_LEVEL_GROWTH);
 	}
 
 	@Override

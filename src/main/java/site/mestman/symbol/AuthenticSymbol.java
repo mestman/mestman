@@ -8,8 +8,8 @@ public class AuthenticSymbol extends Symbol {
 	private static final int REQUIRED_MAX_LEVEL_GROWTH = 4565;
 	private static final int[] REQUIRED_GROWTH_BY_LEVEL = {0, 29, 76, 141, 224, 325, 444, 581, 736, 909, 1100, 0};
 
-	public AuthenticSymbol(int level, int growthForCurrentLevel, int requiredMaxLevelGrowth) {
-		super(level, growthForCurrentLevel, requiredMaxLevelGrowth);
+	public AuthenticSymbol(int level, int growthForCurrentLevel) {
+		super(level, growthForCurrentLevel, REQUIRED_MAX_LEVEL_GROWTH);
 	}
 
 	@Override
