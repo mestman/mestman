@@ -22,6 +22,10 @@ public class Symbol {
 			throw new IllegalArgumentException(
 				"The growth for the current level of the Arkane symbol must be between 1 and 2679.");
 		}
+		if (level == 20 && growthForCurrentLevel != 0) {
+			throw new IllegalArgumentException(
+				"when the Arcane Symbol's max level is 20, growthForCurrentLevel must be 0.");
+		}
 	}
 
 	public static Symbol arcane(int level, int growthForCurrentLevel) {
@@ -37,17 +41,22 @@ public class Symbol {
 	}
 
 	private boolean isGrowthOutOfRange(int growthForCurrentLevel) {
+		if (level == 20 && growthForCurrentLevel == 0) {
+			return false;
+		}
 		return growthForCurrentLevel < 1 || growthForCurrentLevel > 2679;
 	}
 
 	// 현재 심볼이 최대 레벨을 달성하기 위해서 필요한 일자를 계산
 	public LocalDate calculateCompletionDateForMaxLevel(int numberOfSymbolPerDay) {
-		// 만렙 달성 필요 일자 = (만렙 필요 성장치 - 누적 성장치) / 하루에 얻을 수 있는 심볼 개수
 		// 누적 성장치 = 현재 레벨 누적 성장치 + 현재 레벨 성장치
+		// 만렙 달성 필요 일자 = (만렙 필요 성장치 - 누적 성장치) / 하루에 얻을 수 있는 심볼 개수
 		int reduceGrowth = reduceGrowthBy(level) + growthForCurrentLevel;
 		log.info("reduceGrowth is {} by level", reduceGrowth);
-		int days = (requiredMaxLevelGrowth - reduceGrowth) / numberOfSymbolPerDay;
-		if (requiredMaxLevelGrowth % numberOfSymbolPerDay != 0) {
+		int requiredGrowth = requiredMaxLevelGrowth - reduceGrowth;
+		int days = requiredGrowth / numberOfSymbolPerDay;
+		log.info("days is {}", days);
+		if (requiredGrowth % numberOfSymbolPerDay != 0) {
 			days++;
 		}
 		log.info("days is {}", days);
@@ -56,8 +65,10 @@ public class Symbol {
 
 	// 현재 레벨에 따른 누적 성장치 계산
 	private int reduceGrowthBy(int level) {
-		int[] requiredGrowthByLevel = {0, 12, 15, 20, 27, 36, 47, 60, 75, 92, 111, 132, 155, 180, 207, 236, 267, 300,
-			335, 372, 0};
+		int[] requiredGrowthByLevel = {0, 12, 15, 20, 27, 36,
+			47, 60, 75, 92, 111, 132,
+			155, 180, 207, 236, 267,
+			300, 335, 372, 0};
 
 		return IntStream.rangeClosed(1, level - 1)
 			.map(i -> requiredGrowthByLevel[i])

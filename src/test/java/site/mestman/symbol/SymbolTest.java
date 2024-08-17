@@ -16,7 +16,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 class SymbolTest {
 
 	@DisplayName("심볼이 주어지고 해당 심볼이 만렙을 달성하기 위한 필요일자를 계산한다")
-	@MethodSource(value = {"symbolSource"})
+	@MethodSource(value = {"acaneSymbolSource"})
 	@ParameterizedTest
 	void testCalculateDateForMaxLevel(int level, int growthForCurrentLevel, LocalDate expected) {
 		// given
@@ -28,12 +28,16 @@ class SymbolTest {
 		assertThat(completionDate).isEqualTo(expected);
 	}
 
-	public static Stream<Arguments> symbolSource() {
+	public static Stream<Arguments> acaneSymbolSource() {
 		LocalDate today = LocalDate.now();
 		return Stream.of(
 			Arguments.of(1, 1, today.plusDays(134)),
 			Arguments.of(2, 8, today.plusDays(133)),
-			Arguments.of(10, 1, today.plusDays(115))
+			Arguments.of(10, 1, today.plusDays(115)),
+			Arguments.of(19, 1, today.plusDays(19)),
+			Arguments.of(19, 371, today.plusDays(1)),
+			Arguments.of(19, 372, today.plusDays(0)),
+			Arguments.of(20, 0, today.plusDays(0))
 		);
 	}
 
@@ -63,6 +67,35 @@ class SymbolTest {
 		Assertions.assertThat(throwable)
 			.isInstanceOf(IllegalArgumentException.class)
 			.hasMessage("The growth for the current level of the Arkane symbol must be between 1 and 2679.");
+	}
+
+	@DisplayName("아케인 심볼이 최대 레벨(20)일때 현재 성장치는 0이어야 한다")
+	@Test
+	void testArcaneSymbolGrowthAtMaxLevel() {
+		// given
+		int level = 20;
+		int growthForCurrentLevel = 0;
+		// when
+		Symbol arcane = Symbol.arcane(level, growthForCurrentLevel);
+		// then
+		int expected = 0;
+		Assertions.assertThat(arcane)
+			.extracting("growthForCurrentLevel")
+			.isEqualTo(expected);
+	}
+
+	@DisplayName("아케인 심볼이 최대 레벨(20)일때 현재 성장치는 0이 아닌 경우 예외가 발생한다")
+	@CsvSource(value = {"2679", "1"})
+	@ParameterizedTest
+	void testArcaneSymbolThrowsExceptionWhenGrowthNotEqualsMaxLevel(int growthForCurrentLevel) {
+		// given
+		int level = 20;
+		// when
+		Throwable throwable = catchThrowable(() -> Symbol.arcane(level, growthForCurrentLevel));
+		// then
+		Assertions.assertThat(throwable)
+			.isInstanceOf(IllegalArgumentException.class)
+			.hasMessage("when the Arcane Symbol's max level is 20, growthForCurrentLevel must be 0.");
 	}
 
 	@DisplayName("아케인 심볼의 요구되는 최대 레벨 누적 성장치는 2,679이여야 한다")
