@@ -7,13 +7,16 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Symbol {
-	private final int level;
+	private final int level; // 레벨
+	private final int growthForCurrentLevel; // 현재 성장치
 
-	public Symbol(int level) {
+	public Symbol(int level, int growthForCurrentLevel) {
 		this.level = level;
+		this.growthForCurrentLevel = growthForCurrentLevel;
 		if (isLevelOutOfRange(level)) {
 			throw new IllegalArgumentException("The level of the Arkane symbol must be between 1 and 20 levels.");
 		}
+		// TODO: growthForCurrentLevel 검증문 추가하기
 	}
 
 	private boolean isLevelOutOfRange(int level) {

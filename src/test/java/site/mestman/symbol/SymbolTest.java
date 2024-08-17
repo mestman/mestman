@@ -16,9 +16,9 @@ class SymbolTest {
 	@DisplayName("심볼이 주어지고 해당 심볼이 만렙을 달성하기 위한 필요일자를 계산한다")
 	@MethodSource(value = {"symbolSource"})
 	@ParameterizedTest
-	void testCalculateDateForMaxLevel(int level, LocalDate expected) {
+	void testCalculateDateForMaxLevel(int level, int growthForCurrentLevel, LocalDate expected) {
 		// given
-		Symbol pathOfVanishing = new Symbol(level);
+		Symbol pathOfVanishing = new Symbol(level, growthForCurrentLevel);
 		int numberOfSymbolPerDay = 20;
 		// when
 		LocalDate completionDate = pathOfVanishing.calculateCompletionDateForMaxLevel(numberOfSymbolPerDay);
@@ -29,8 +29,8 @@ class SymbolTest {
 	public static Stream<Arguments> symbolSource() {
 		LocalDate today = LocalDate.now();
 		return Stream.of(
-			Arguments.of(1, today.plusDays(134)),
-			Arguments.of(10, today.plusDays(115))
+			Arguments.of(1, 0, today.plusDays(134)),
+			Arguments.of(10, 0, today.plusDays(115))
 		);
 	}
 
@@ -39,9 +39,9 @@ class SymbolTest {
 	@ParameterizedTest
 	void testCreateSymbolInstance(int level) {
 		// given
-
+		int growthForCurrentLevel = 0;
 		// when
-		Throwable throwable = catchThrowable(() -> new Symbol(level));
+		Throwable throwable = catchThrowable(() -> new Symbol(level, growthForCurrentLevel));
 		// then
 		assertThat(throwable)
 			.isInstanceOf(IllegalArgumentException.class)
