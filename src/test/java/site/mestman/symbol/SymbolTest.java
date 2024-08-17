@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -35,10 +36,10 @@ class SymbolTest {
 		);
 	}
 
-	@DisplayName("아케인 심볼의 레벨은 1~20 사이여야 한다")
+	@DisplayName("아케인 심볼의 레벨은 1~20 사이가 아니면 예외가 발생한다")
 	@CsvSource(value = {"-1", "0", "21"})
 	@ParameterizedTest
-	void testCreateSymbolInstance(int level) {
+	void testCreateSymbolInstanceForLevel(int level) {
 		// given
 		int growthForCurrentLevel = 0;
 		// when
@@ -47,5 +48,19 @@ class SymbolTest {
 		assertThat(throwable)
 			.isInstanceOf(IllegalArgumentException.class)
 			.hasMessage("The level of the Arkane symbol must be between 1 and 20 levels.");
+	}
+
+	@DisplayName("현재 레벨 성장치는 0보다 작거나 아케인 심볼의 최대 누적 성장치보다 크면 예외가 발생한다")
+	@CsvSource(value = {"-1", "0", "2680"})
+	@ParameterizedTest
+	void testCreateSymbolInstanceForGrowthForCurrentLevel(int growthForCurrentLevel) {
+		// given
+		int level = 1;
+		// when
+		Throwable throwable = catchThrowable(() -> new Symbol(level, growthForCurrentLevel));
+		// then
+		Assertions.assertThat(throwable)
+			.isInstanceOf(IllegalArgumentException.class)
+			.hasMessage("The growth for the current level of the Arkane symbol must be between 1 and 2679.");
 	}
 }

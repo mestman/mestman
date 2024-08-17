@@ -16,7 +16,11 @@ public class Symbol {
 		if (isLevelOutOfRange(level)) {
 			throw new IllegalArgumentException("The level of the Arkane symbol must be between 1 and 20 levels.");
 		}
-		// TODO: growthForCurrentLevel 검증문 추가하기
+		// 현재 레벨에 대한 성장치는 0보다 커야하고 심볼의 최대 레벨에 대한 누적 성장치보다는 이하여야 한다
+		if (growthForCurrentLevel < 1 || growthForCurrentLevel > 2679) {
+			throw new IllegalArgumentException(
+				"The growth for the current level of the Arkane symbol must be between 1 and 2679.");
+		}
 	}
 
 	private boolean isLevelOutOfRange(int level) {
