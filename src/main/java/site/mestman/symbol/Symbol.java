@@ -3,13 +3,18 @@ package site.mestman.symbol;
 import java.time.LocalDate;
 import java.util.stream.IntStream;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequiredArgsConstructor
 public class Symbol {
 	private final int level;
+
+	public Symbol(int level) {
+		this.level = level;
+		if (this.level < 1 || this.level > 20) {
+			throw new IllegalArgumentException("The level of the Arkane symbol must be between 1 and 20 levels.");
+		}
+	}
 
 	// 현재 심볼이 최대 레벨을 달성하기 위해서 필요한 일자를 계산
 	public LocalDate calculateCompletionDateForMaxLevel(int numberOfSymbolPerDay) {
