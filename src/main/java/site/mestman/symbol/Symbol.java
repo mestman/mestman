@@ -1,7 +1,6 @@
 package site.mestman.symbol;
 
 import java.time.LocalDate;
-import java.util.stream.IntStream;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,10 +14,14 @@ public abstract class Symbol {
 		this.level = level;
 		this.growthForCurrentLevel = growthForCurrentLevel;
 		this.requiredMaxLevelGrowth = requiredMaxLevelGrowth;
+		validate(level, growthForCurrentLevel);
+	}
+
+	private void validate(int level, int growthForCurrentLevel) {
 		if (isLevelOutOfRange(level)) {
 			throw new IllegalArgumentException("The level of the Arkane symbol must be between 1 and 20 levels.");
 		}
-		if (isGrowthOutOfRange(growthForCurrentLevel)) {
+		if (isGrowthOutOfRange(level, growthForCurrentLevel)) {
 			throw new IllegalArgumentException(
 				"The growth for the current level of the Arkane symbol must be between 1 and 2679.");
 		}
@@ -36,20 +39,11 @@ public abstract class Symbol {
 		return new AuthenticSymbol(level, growthForCurrentLevel, 4565);
 	}
 
-	private boolean isLevelOutOfRange(int level) {
-		return level < 1 || level > 20;
-	}
+	public abstract boolean isLevelOutOfRange(int level);
 
-	private boolean isGrowthOutOfRange(int growthForCurrentLevel) {
-		if (level == 20 && growthForCurrentLevel == 0) {
-			return false;
-		}
-		return growthForCurrentLevel < 1 || growthForCurrentLevel > 2679;
-	}
+	public abstract boolean isGrowthOutOfRange(int level, int growthForCurrentLevel);
 
-	private boolean isGrowthNonZeroAtMaxLevelFor(int level, int growthForCurrentLevel) {
-		return level == 20 && growthForCurrentLevel != 0;
-	}
+	public abstract boolean isGrowthNonZeroAtMaxLevelFor(int level, int growthForCurrentLevel);
 
 	// 현재 심볼이 최대 레벨을 달성하기 위해서 필요한 일자를 계산
 	public LocalDate calculateCompletionDateForMaxLevel(int numberOfSymbolPerDay) {
@@ -68,14 +62,5 @@ public abstract class Symbol {
 	}
 
 	// 현재 레벨에 따른 누적 성장치 계산
-	private int reduceGrowthBy(int level) {
-		int[] requiredGrowthByLevel = {0, 12, 15, 20, 27, 36,
-			47, 60, 75, 92, 111, 132,
-			155, 180, 207, 236, 267,
-			300, 335, 372, 0};
-
-		return IntStream.rangeClosed(1, level - 1)
-			.map(i -> requiredGrowthByLevel[i])
-			.sum();
-	}
+	public abstract int reduceGrowthBy(int level);
 }

@@ -133,7 +133,7 @@ class SymbolTest {
 	@ParameterizedTest
 	void testCalculateDateForMaxLevelWithAuthentic(int level, int growthForCurrentLevel, LocalDate expected) {
 		// given
-		Symbol pathOfVanishing = Symbol.arcane(level, growthForCurrentLevel);
+		Symbol pathOfVanishing = Symbol.authentic(level, growthForCurrentLevel);
 		int numberOfSymbolPerDay = 20;
 		// when
 		LocalDate completionDate = pathOfVanishing.calculateCompletionDateForMaxLevel(numberOfSymbolPerDay);
