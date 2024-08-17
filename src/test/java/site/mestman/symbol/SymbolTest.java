@@ -21,9 +21,8 @@ class SymbolTest {
 	void testCalculateDateForMaxLevel(int level, int growthForCurrentLevel, LocalDate expected) {
 		// given
 		Symbol pathOfVanishing = Symbol.arcane(level, growthForCurrentLevel);
-		int numberOfSymbolPerDay = 20;
 		// when
-		LocalDate completionDate = pathOfVanishing.calculateCompletionDateForMaxLevel(numberOfSymbolPerDay);
+		LocalDate completionDate = pathOfVanishing.calculateCompletionDateForMaxLevel();
 		// then
 		assertThat(completionDate).isEqualTo(expected);
 	}
@@ -114,52 +113,49 @@ class SymbolTest {
 	@DisplayName("어센틱 세르니움 심볼이 주어지고 해당 심볼이 만렙을 달성하기 위한 필요일자를 계산한다")
 	@MethodSource(value = {"cerniumAuthenticSymbolSource"})
 	@ParameterizedTest
-	void testCalculateDateForMaxLevelWithAuthentic(int level, int growthForCurrentLevel, int numberOfSymbolPerDay,
-		LocalDate expected) {
+	void testCalculateDateForMaxLevelWithAuthentic(int level, int growthForCurrentLevel, LocalDate expected) {
 		// given
 		Symbol pathOfVanishing = Symbol.cernium(level, growthForCurrentLevel);
 		// when
-		LocalDate completionDate = pathOfVanishing.calculateCompletionDateForMaxLevel(numberOfSymbolPerDay);
+		LocalDate completionDate = pathOfVanishing.calculateCompletionDateForMaxLevel();
 		// then
 		assertThat(completionDate).isEqualTo(expected);
 	}
 
 	public static Stream<Arguments> cerniumAuthenticSymbolSource() {
 		LocalDate today = LocalDate.now();
-		int numberOfSymbolPerDay = 20;
 		return Stream.of(
-			Arguments.of(1, 1, numberOfSymbolPerDay, today.plusDays(229)),
-			Arguments.of(2, 12, numberOfSymbolPerDay, today.plusDays(227)),
-			Arguments.of(10, 1, numberOfSymbolPerDay, today.plusDays(55)),
-			Arguments.of(10, 1109, numberOfSymbolPerDay, today.plusDays(1)),
-			Arguments.of(10, 1100, numberOfSymbolPerDay, today.plusDays(0)),
-			Arguments.of(11, 0, numberOfSymbolPerDay, today.plusDays(0))
+			Arguments.of(1, 1, today.plusDays(229)),
+			Arguments.of(2, 12, today.plusDays(227)),
+			Arguments.of(10, 1, today.plusDays(55)),
+			Arguments.of(10, 1109, today.plusDays(1)),
+			Arguments.of(10, 1100, today.plusDays(0)),
+			Arguments.of(11, 0, today.plusDays(0))
 		);
 	}
 
 	@DisplayName("어센틱 세르니움 심볼이 아닌 다른 어센틱 심볼이 주어지고 해당 심볼이 만렙을 달성하기 위한 필요일자를 계산한다")
 	@MethodSource(value = {"otherAuthenticSymbolSource"})
 	@ParameterizedTest
-	void testCalculateDateForMaxLevelWithOtherAuthentic(int level, int growthForCurrentLevel, int numberOfSymbolPerDay,
+	void testCalculateDateForMaxLevelWithOtherAuthentic(int level, int growthForCurrentLevel,
 		LocalDate expected) {
 		// given
-		Symbol pathOfVanishing = Symbol.basic(level, growthForCurrentLevel);
+		Symbol pathOfVanishing = Symbol.otherAuthentic(level, growthForCurrentLevel);
 		// when
-		LocalDate completionDate = pathOfVanishing.calculateCompletionDateForMaxLevel(numberOfSymbolPerDay);
+		LocalDate completionDate = pathOfVanishing.calculateCompletionDateForMaxLevel();
 		// then
 		assertThat(completionDate).isEqualTo(expected);
 	}
 
 	private static Stream<Arguments> otherAuthenticSymbolSource() {
 		LocalDate today = LocalDate.now();
-		int numberOfSymbolPerDay = 10;
 		return Stream.of(
-			Arguments.of(1, 1, numberOfSymbolPerDay, today.plusDays(457)),
-			Arguments.of(2, 12, numberOfSymbolPerDay, today.plusDays(453)),
-			Arguments.of(10, 1, numberOfSymbolPerDay, today.plusDays(110)),
-			Arguments.of(10, 1109, numberOfSymbolPerDay, today.plusDays(1)),
-			Arguments.of(10, 1100, numberOfSymbolPerDay, today.plusDays(0)),
-			Arguments.of(11, 0, numberOfSymbolPerDay, today.plusDays(0))
+			Arguments.of(1, 1, today.plusDays(457)),
+			Arguments.of(2, 12, today.plusDays(453)),
+			Arguments.of(10, 1, today.plusDays(110)),
+			Arguments.of(10, 1109, today.plusDays(1)),
+			Arguments.of(10, 1100, today.plusDays(0)),
+			Arguments.of(11, 0, today.plusDays(0))
 		);
 	}
 

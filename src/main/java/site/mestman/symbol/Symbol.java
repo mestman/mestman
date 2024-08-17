@@ -34,7 +34,7 @@ public abstract class Symbol {
 		return new AuthenticSymbol(level, growthForCurrentLevel, 20);
 	}
 
-	public static Symbol basic(int level, int growthForCurrentLevel) {
+	public static Symbol otherAuthentic(int level, int growthForCurrentLevel) {
 		return new AuthenticSymbol(level, growthForCurrentLevel, 10);
 	}
 
@@ -47,7 +47,7 @@ public abstract class Symbol {
 	public abstract boolean isGrowthNonZeroAtMaxLevelFor(int level, int growthForCurrentLevel);
 
 	// 현재 심볼이 최대 레벨을 달성하기 위해서 필요한 일자를 계산
-	public LocalDate calculateCompletionDateForMaxLevel(int dailySymbols) {
+	public LocalDate calculateCompletionDateForMaxLevel() {
 		return LocalDate.now().plusDays(days(this.dailySymbols, requiredGrowth(reduceGrowth())));
 	}
 
