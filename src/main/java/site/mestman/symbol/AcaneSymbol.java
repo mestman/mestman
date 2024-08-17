@@ -8,6 +8,21 @@ public class AcaneSymbol extends Symbol {
 	}
 
 	@Override
+	public void validateFor(int level, int growthForCurrentLevel) {
+		if (isLevelOutOfRange(level)) {
+			throw new IllegalArgumentException("The level of the Arkane symbol must be between 1 and 20 levels.");
+		}
+		if (isGrowthOutOfRange(level, growthForCurrentLevel)) {
+			throw new IllegalArgumentException(
+				"The growth for the current level of the Arkane symbol must be between 1 and 2679.");
+		}
+		if (isGrowthNonZeroAtMaxLevelFor(level, growthForCurrentLevel)) {
+			throw new IllegalArgumentException(
+				"when the Arcane Symbol's max level is 20, growthForCurrentLevel must be 0.");
+		}
+	}
+
+	@Override
 	public boolean isLevelOutOfRange(int level) {
 		return level < 1 || level > 20;
 	}

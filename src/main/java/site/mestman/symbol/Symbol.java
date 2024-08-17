@@ -14,21 +14,7 @@ public abstract class Symbol {
 		this.level = level;
 		this.growthForCurrentLevel = growthForCurrentLevel;
 		this.requiredMaxLevelGrowth = requiredMaxLevelGrowth;
-		validate(level, growthForCurrentLevel);
-	}
-
-	private void validate(int level, int growthForCurrentLevel) {
-		if (isLevelOutOfRange(level)) {
-			throw new IllegalArgumentException("The level of the Arkane symbol must be between 1 and 20 levels.");
-		}
-		if (isGrowthOutOfRange(level, growthForCurrentLevel)) {
-			throw new IllegalArgumentException(
-				"The growth for the current level of the Arkane symbol must be between 1 and 2679.");
-		}
-		if (isGrowthNonZeroAtMaxLevelFor(level, growthForCurrentLevel)) {
-			throw new IllegalArgumentException(
-				"when the Arcane Symbol's max level is 20, growthForCurrentLevel must be 0.");
-		}
+		validateFor(level, growthForCurrentLevel);
 	}
 
 	public static Symbol arcane(int level, int growthForCurrentLevel) {
@@ -38,6 +24,8 @@ public abstract class Symbol {
 	public static Symbol authentic(int level, int growthForCurrentLevel) {
 		return new AuthenticSymbol(level, growthForCurrentLevel, 4565);
 	}
+
+	public abstract void validateFor(int level, int growthForCurrentLevel);
 
 	public abstract boolean isLevelOutOfRange(int level);
 

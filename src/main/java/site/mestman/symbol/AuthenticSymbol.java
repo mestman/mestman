@@ -9,6 +9,21 @@ public class AuthenticSymbol extends Symbol {
 	}
 
 	@Override
+	public void validateFor(int level, int growthForCurrentLevel) {
+		if (isLevelOutOfRange(level)) {
+			throw new IllegalArgumentException("The level of the Authentic symbol must be between 1 and 11 levels.");
+		}
+		if (isGrowthOutOfRange(level, growthForCurrentLevel)) {
+			throw new IllegalArgumentException(
+				"The growth for the current level of the Authentic symbol must be between 1 and 4565.");
+		}
+		if (isGrowthNonZeroAtMaxLevelFor(level, growthForCurrentLevel)) {
+			throw new IllegalArgumentException(
+				"when the Arcane Symbol's max level is 11, growthForCurrentLevel must be 0.");
+		}
+	}
+
+	@Override
 	public boolean isLevelOutOfRange(int level) {
 		return level < 1 || level > 11;
 	}

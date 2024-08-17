@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 class SymbolTest {
 
-	@DisplayName("심볼이 주어지고 해당 심볼이 만렙을 달성하기 위한 필요일자를 계산한다")
+	@DisplayName("아케인 심볼이 주어지고 해당 심볼이 만렙을 달성하기 위한 필요일자를 계산한다")
 	@MethodSource(value = {"acaneSymbolSource"})
 	@ParameterizedTest
 	void testCalculateDateForMaxLevel(int level, int growthForCurrentLevel, LocalDate expected) {
@@ -151,5 +151,19 @@ class SymbolTest {
 			Arguments.of(10, 1100, today.plusDays(0)),
 			Arguments.of(11, 0, today.plusDays(0))
 		);
+	}
+
+	@DisplayName("어센틱 심볼의 레벨은 1~11 사이가 아니면 예외가 발생한다")
+	@CsvSource(value = {"-1", "0", "12"})
+	@ParameterizedTest
+	void testCreateSymbolInstanceForLevelWithAuthentic(int level) {
+		// given
+		int growthForCurrentLevel = 0;
+		// when
+		Throwable throwable = catchThrowable(() -> Symbol.authentic(level, growthForCurrentLevel));
+		// then
+		assertThat(throwable)
+			.isInstanceOf(IllegalArgumentException.class)
+			.hasMessage("The level of the Authentic symbol must be between 1 and 11 levels.");
 	}
 }
