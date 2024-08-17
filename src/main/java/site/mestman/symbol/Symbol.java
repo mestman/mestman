@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 public class Symbol {
 	private final int level; // 레벨
 	private final int growthForCurrentLevel; // 현재 성장치
+	private final int requiredMaxLevelGrowth = 2679; // 최대 레벨 누적 성장치
 
 	public Symbol(int level, int growthForCurrentLevel) {
 		this.level = level;
@@ -16,8 +17,7 @@ public class Symbol {
 		if (isLevelOutOfRange(level)) {
 			throw new IllegalArgumentException("The level of the Arkane symbol must be between 1 and 20 levels.");
 		}
-		// 현재 레벨에 대한 성장치는 0보다 커야하고 심볼의 최대 레벨에 대한 누적 성장치보다는 이하여야 한다
-		if (growthForCurrentLevel < 1 || growthForCurrentLevel > 2679) {
+		if (isGrowthOutOfRange(growthForCurrentLevel)) {
 			throw new IllegalArgumentException(
 				"The growth for the current level of the Arkane symbol must be between 1 and 2679.");
 		}
@@ -25,6 +25,10 @@ public class Symbol {
 
 	private boolean isLevelOutOfRange(int level) {
 		return level < 1 || level > 20;
+	}
+
+	private boolean isGrowthOutOfRange(int growthForCurrentLevel) {
+		return growthForCurrentLevel < 1 || growthForCurrentLevel > 2679;
 	}
 
 	// 현재 심볼이 최대 레벨을 달성하기 위해서 필요한 일자를 계산

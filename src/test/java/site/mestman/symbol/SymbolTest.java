@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -30,9 +31,9 @@ class SymbolTest {
 	public static Stream<Arguments> symbolSource() {
 		LocalDate today = LocalDate.now();
 		return Stream.of(
-			Arguments.of(1, 0, today.plusDays(134)),
+			Arguments.of(1, 1, today.plusDays(134)),
 			Arguments.of(2, 8, today.plusDays(133)),
-			Arguments.of(10, 0, today.plusDays(115))
+			Arguments.of(10, 1, today.plusDays(115))
 		);
 	}
 
@@ -62,5 +63,20 @@ class SymbolTest {
 		Assertions.assertThat(throwable)
 			.isInstanceOf(IllegalArgumentException.class)
 			.hasMessage("The growth for the current level of the Arkane symbol must be between 1 and 2679.");
+	}
+
+	@DisplayName("아케인 심볼의 요구되는 최대 레벨 누적 성장치는 2679여야 한다")
+	@Test
+	void testMaxGrowthForCurrentLevel() {
+		// given
+		int level = 1;
+		int growthForCurrentLevel = 1;
+		// when
+		Symbol symbol = new Symbol(level, growthForCurrentLevel);
+		// then
+		int expected = 2679;
+		assertThat(symbol)
+			.extracting("requiredMaxLevelGrowth")
+			.isEqualTo(expected);
 	}
 }
