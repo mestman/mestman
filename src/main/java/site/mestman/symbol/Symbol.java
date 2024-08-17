@@ -29,7 +29,7 @@ public abstract class Symbol {
 
 	public abstract boolean isLevelOfRange(int level);
 
-	public abstract boolean isGrowthOutOfRange(int level, int growthForCurrentLevel);
+	public abstract boolean isGrowthOfRange(int level, int growthForCurrentLevel);
 
 	public abstract boolean isGrowthNonZeroAtMaxLevelFor(int level, int growthForCurrentLevel);
 

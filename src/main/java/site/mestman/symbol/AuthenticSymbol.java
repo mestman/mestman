@@ -17,7 +17,7 @@ public class AuthenticSymbol extends Symbol {
 			throw new IllegalArgumentException(
 				"The level of the Authentic symbol must be between 1 and " + MAX_LEVEL + " levels.");
 		}
-		if (isGrowthOutOfRange(level, growthForCurrentLevel)) {
+		if (!isGrowthOfRange(level, growthForCurrentLevel)) {
 			throw new IllegalArgumentException(
 				"The growth for the current level of the Authentic symbol must be between 1 and "
 					+ REQUIRED_MAX_LEVEL_GROWTH + ".");
@@ -34,11 +34,11 @@ public class AuthenticSymbol extends Symbol {
 	}
 
 	@Override
-	public boolean isGrowthOutOfRange(int level, int growthForCurrentLevel) {
+	public boolean isGrowthOfRange(int level, int growthForCurrentLevel) {
 		if (level == MAX_LEVEL && growthForCurrentLevel == 0) {
-			return false;
+			return true;
 		}
-		return growthForCurrentLevel < 1 || growthForCurrentLevel > REQUIRED_MAX_LEVEL_GROWTH;
+		return growthForCurrentLevel >= 1 && growthForCurrentLevel <= REQUIRED_MAX_LEVEL_GROWTH;
 	}
 
 	@Override
