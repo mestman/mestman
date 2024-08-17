@@ -11,9 +11,13 @@ public class Symbol {
 
 	public Symbol(int level) {
 		this.level = level;
-		if (this.level < 1 || this.level > 20) {
+		if (isLevelOutOfRange(level)) {
 			throw new IllegalArgumentException("The level of the Arkane symbol must be between 1 and 20 levels.");
 		}
+	}
+
+	private boolean isLevelOutOfRange(int level) {
+		return level < 1 || level > 20;
 	}
 
 	// 현재 심볼이 최대 레벨을 달성하기 위해서 필요한 일자를 계산
